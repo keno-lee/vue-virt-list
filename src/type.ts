@@ -74,12 +74,19 @@ export interface VirtListProps<T extends Record<string, string>>
   itemClass?: string;
 }
 
-export interface EmitFunction<T> {
-  scroll?: (e: Event) => void;
+export interface BaseEmitFn<T> {
   toTop?: (item: T) => void;
   toBottom?: (item: T) => void;
   itemResize?: (id: string, newSize: number) => void;
   rangeUpdate?: (begin: number, end: number) => void;
+}
+
+export interface EmitFunction<T> extends BaseEmitFn<T> {
+  scroll?: (e: Event) => void;
+}
+
+export interface VirtScrollbarEmitFunction<T> extends BaseEmitFn<T> {
+  scroll?: (offset: number) => void;
 }
 
 export interface NormalEmitFunction<T> extends EmitFunction<T> {
@@ -94,7 +101,7 @@ export type SlotSize = {
   stickyFooterSize: number;
 };
 
-export type VirtListReturn<T extends Record<string, string>> = {
+export interface VirtListReturn<T extends Record<string, string>> {
   props: Required<VirtListProps<T>>;
 
   renderList: Ref<T[]>;
@@ -131,4 +138,11 @@ export type VirtListReturn<T extends Record<string, string>> = {
     bottom: number;
   };
   forceUpdate: () => void;
-};
+}
+
+export interface VirtScrollbarReturn<T extends Record<string, string>>
+  extends VirtListReturn<T> {
+  transformDistance: Ref<number>;
+  handleScroll: (delta: number) => void;
+  onScrollBarScroll: (offsetRatio: number) => void;
+}
