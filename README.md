@@ -18,7 +18,7 @@
 
 ## Documentation
 
-To check out docs, visit <a href="https://keno-lee.github.io/vue-virt-list/" target="_blank">vue-virt-list</a>
+To check out docs, visit <a href="https://kolarorz.github.io/vue-virt-list/" target="_blank">vue-virt-list</a>
 
 ## Quick Start
 
@@ -71,7 +71,7 @@ npm install vue-virt-list -S
   const list = ref([{ id: 0, text: 'text' }]);
 
   // 大数据建议使用 shallowRef，自行使用renderKey控制响应式，具体参考demo文档:
-  // https://keno-lee.github.io/vue-virt-list/examples/huge-data/
+  // https://kolarorz.github.io/vue-virt-list/examples/huge-data/
   // const list = shallowRef([{ id: 0, text: 'text' }])
 </script>
 ```
