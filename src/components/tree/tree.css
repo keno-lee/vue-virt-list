@@ -16,6 +16,7 @@
   transform: rotate(-90deg);
   transition: all 0.5s ease;
 }
+
 .virt-tree-icon.virt-tree-icon--expanded {
   transform: rotate(0deg);
 }
@@ -23,10 +24,16 @@
   flex: 1;
 }
 
+.virt-tree-item-container.is-selected {
+  background-color: #f5f7fa;
+  color: rgb(96, 98, 102);
+}
+/* TODO 要干掉 */
 .virt-tree-item-container--current {
   background-color: #f5f7fa;
   color: rgb(96, 98, 102);
 }
+
 .checkbox {
   display: inline-block;
   position: relative;
@@ -40,11 +47,6 @@
     border-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46),
     background-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46),
     outline 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46);
-}
-.checkbox--indeterminate,
-.checkbox--checked {
-  background-color: #1890ff;
-  border-color: #1890ff;
 }
 .checkbox::after {
   box-sizing: content-box;
@@ -61,11 +63,19 @@
   transition: transform 0.15s ease-in 0.05s;
   transform-origin: center;
 }
-.checkbox--checked::after {
+.checkbox.is-checked {
+  border-color: #1890ff;
+  background-color: #1890ff;
+}
+.checkbox.is-checked::after {
   transform: rotate(45deg) scaleY(1);
   border-color: #fff;
 }
-.checkbox--indeterminate::before {
+.checkbox.is-indeterminate {
+  border-color: #1890ff;
+  background-color: #1890ff;
+}
+.checkbox.is-indeterminate::before {
   content: '';
   position: absolute;
   display: block;

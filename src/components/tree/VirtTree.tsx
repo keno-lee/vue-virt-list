@@ -24,6 +24,8 @@ export default defineComponent({
       onCheckChange,
       toggleExpand,
       isForceHiddenExpandIcon,
+
+      isSelected,
     } = this;
 
     const { minSize, showCheckbox, indent } = this.$props as TreeProps;
@@ -37,17 +39,20 @@ export default defineComponent({
       return _h2Slot(
         TreeNode,
         {
-          node: itemData,
-          indent,
-          showCheckbox,
-          hiddenExpandIcon: isForceHiddenExpandIcon(itemData),
-          expanded: isExpanded(itemData),
-          current: isCurrent(itemData),
-          checked: isChecked(itemData),
-          indeterminate: isIndeterminate(itemData),
-          onClick: onClickTreeNode,
-          onCheck: onCheckChange,
-          onToggle: (node: ITreeNode) => toggleExpand(node),
+          attrs: {
+            node: itemData,
+            indent,
+            showCheckbox,
+            hiddenExpandIcon: isForceHiddenExpandIcon(itemData),
+            expanded: isExpanded(itemData),
+            current: isCurrent(itemData),
+            isChecked: isChecked(itemData),
+            isSelected: isSelected(itemData),
+            indeterminate: isIndeterminate(itemData),
+            onClick: onClickTreeNode,
+            onCheck: onCheckChange,
+            onToggle: (node: ITreeNode) => toggleExpand(node),
+          },
         },
         {
           default: getSlot(this, 'default')
@@ -75,7 +80,7 @@ export default defineComponent({
     return _h2Slot(
       VirtList,
       {
-        ref: 'virListRef',
+        ref: 'virtListRef',
         attrs: {
           list: flattenList,
           minSize: minSize,

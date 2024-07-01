@@ -21,6 +21,7 @@ import type {
 } from './type';
 import { useCheck } from './useCheck';
 import { useFilter } from './useFilter';
+import { useSelect } from './useSelect';
 
 // enums
 export enum TreeOptionsEnum {
@@ -89,12 +90,16 @@ export const treeProps = {
     type: Boolean,
     default: false,
   },
-  disabled: {
+  disableCheckbox: {
     type: Boolean,
     default: false,
   },
   filterMethod: {
     type: Function as PropType<(query: string, node: TreeNodeData) => boolean>,
+  },
+  selectable: {
+    type: Boolean,
+    default: false,
   },
 };
 
@@ -110,7 +115,7 @@ export const useTree = (
   props: TreeProps,
   emits: SetupContext<typeof TreeEmits>['emit'],
 ) => {
-  const virListRef = ref<InstanceType<typeof VirtList> | null>(null);
+  const virtListRef = ref<InstanceType<typeof VirtList> | null>(null);
   const expandedKeysSet = shallowRef<Set<TreeKey>>(
     new Set(props.defaultExpandedKeys),
   );
@@ -123,6 +128,8 @@ export const useTree = (
     emits,
     tree,
   );
+
+  const { isSelected } = useSelect(props, emits, tree);
 
   const { doFilter, hiddenNodeKeySet, isForceHiddenExpandIcon } = useFilter(
     props,
@@ -241,8 +248,8 @@ export const useTree = (
   };
 
   const toggleExpand = (node: ITreeNode) => {
-    if (!virListRef.value) return;
-    const { offset: preOffset } = virListRef.value.reactiveData;
+    if (!virtListRef.value) return;
+    const { offset: preOffset } = virtListRef.value.reactiveData;
     const expandedKeys = expandedKeysSet.value;
     if (expandedKeys.has(node.key)) {
       collapseNode(node);
@@ -250,7 +257,7 @@ export const useTree = (
       expandNode(node);
     }
     nextTick(() => {
-      if (virListRef.value) virListRef.value.scrollToOffset(preOffset);
+      if (virtListRef.value) virtListRef.value.scrollToOffset(preOffset);
     });
   };
 
@@ -311,7 +318,7 @@ export const useTree = (
   const collapseAllNods = () => {
     expandedKeysSet.value = new Set([]);
     triggerRef(expandedKeysSet);
-    virListRef.value?.scrollToTop();
+    virtListRef.value?.scrollToTop();
   };
 
   const onScroll = (e: Event) => {
@@ -335,11 +342,11 @@ export const useTree = (
   };
 
   const scrollToBottom = () => {
-    virListRef.value?.scrollToBottom();
+    virtListRef.value?.scrollToBottom();
   };
 
   const scrollToTop = () => {
-    virListRef.value?.scrollToTop();
+    virtListRef.value?.scrollToTop();
   };
 
   const scrollToTarget = (key: TreeKey, isTop: boolean = true) => {
@@ -347,10 +354,10 @@ export const useTree = (
     // 若展开节点不在可视区域内，将对应节点滚动到可视区域
     if (currIndex < 0) return;
     if (isTop) {
-      virListRef.value?.scrollToIndex(currIndex);
+      virtListRef.value?.scrollToIndex(currIndex);
       return;
     }
-    virListRef.value?.scrollIntoView(currIndex);
+    virtListRef.value?.scrollIntoView(currIndex);
   };
 
   const onCheckChange = (node: ITreeNode, checked: boolean) => {
@@ -369,8 +376,8 @@ export const useTree = (
     (data: TreeData) => {
       parentNodeKeys.clear();
       setTreeData(data);
-      if (!virListRef.value) return;
-      virListRef.value.forceUpdate();
+      if (!virtListRef.value) return;
+      virtListRef.value.forceUpdate();
     },
     {
       immediate: true,
@@ -388,7 +395,7 @@ export const useTree = (
   );
 
   return {
-    virListRef,
+    virtListRef,
     tree,
 
     flattenList,
@@ -419,5 +426,7 @@ export const useTree = (
     isChecked,
     isIndeterminate,
     onCheckChange,
+
+    isSelected,
   };
 };

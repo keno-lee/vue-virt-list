@@ -27,7 +27,7 @@ export const treeNodeProps = {
     default: 16,
     required: true,
   },
-  checked: {
+  isChecked: {
     type: Boolean,
     default: false,
   },
@@ -40,6 +40,11 @@ export const treeNodeProps = {
     default: false,
   },
   hiddenExpandIcon: {
+    type: Boolean,
+    default: false,
+  },
+
+  isSelected: {
     type: Boolean,
     default: false,
   },
@@ -63,7 +68,7 @@ export default defineComponent({
 
     const onChange = (e: Event) => {
       e.stopPropagation();
-      ctx.emit('check', props.node, !props.checked);
+      ctx.emit('check', props.node, !props.isChecked);
     };
 
     return {
@@ -77,13 +82,61 @@ export default defineComponent({
     const {
       current,
       indent,
-      checked,
+      isChecked,
       showCheckbox,
       indeterminate,
       expanded,
       node,
       hiddenExpandIcon,
+
+      isSelected,
     } = this.$props as TreeNodeProps;
+
+    const slotIcon = getSlot(this, 'icon')
+      ? getSlot(this, 'icon')?.(node, expanded)
+      : _h(
+          'div',
+          {
+            class: `virt-tree-icon ${expanded ? 'virt-tree-icon--expanded' : ''}`,
+            style: {
+              opacity: node.isLeaf || hiddenExpandIcon ? 0 : 1,
+            },
+            attrs: {
+              onClick: handleToggle,
+            },
+          },
+          _h(
+            'svg',
+            {
+              width: '20',
+              height: '20',
+              viewBox: '0 0 20 20',
+              fill: 'none',
+              xmlns: 'http://www.w3.org/2000/svg',
+            },
+            _h('path', {
+              d: 'M14.5632 7.72544L10.539 13.2587C10.2728 13.6247 9.72696 13.6247 9.46073 13.2587L5.43658 7.72544C5.11611 7.28479 5.43088 6.66666 5.97573 6.66666L14.024 6.66666C14.5689 6.66666 14.8837 7.28479 14.5632 7.72544Z',
+              fill: '#6B7075',
+            }),
+          ),
+        );
+
+    const slotCheckbox = showCheckbox
+      ? _h('div', {
+          class: `checkbox ${isChecked ? 'is-checked' : ''} ${indeterminate ? 'is-indeterminate' : ''}`,
+          onClick: onChange,
+        })
+      : null;
+
+    const slotContent = getSlot(this, 'content')
+      ? getSlot(this, 'content')?.(node)
+      : _h(
+          'div',
+          {
+            class: 'virt-tree-node-content',
+          },
+          node.label,
+        );
 
     const renderDefault = () => {
       return getSlot(this, 'default')
@@ -93,53 +146,13 @@ export default defineComponent({
             {
               class: {
                 'virt-tree-item-container': true,
-                'virt-tree-item-container--current': current,
+                // TODO 改成 is-selected
+                // 'virt-tree-item-container--current': current,
+                'is-selected': isSelected,
               },
               style: { paddingLeft: `${(node!.level - 1) * indent}px` },
             },
-            [
-              getSlot(this, 'icon')
-                ? getSlot(this, 'icon')?.(node, expanded)
-                : _h(
-                    'div',
-                    {
-                      class: `virt-tree-icon ${expanded ? 'virt-tree-icon--expanded' : ''}`,
-                      style: {
-                        opacity: node.isLeaf || hiddenExpandIcon ? 0 : 1,
-                      },
-                      onClick: handleToggle,
-                    },
-                    _h(
-                      'svg',
-                      {
-                        width: '20',
-                        height: '20',
-                        viewBox: '0 0 20 20',
-                        fill: 'none',
-                        xmlns: 'http://www.w3.org/2000/svg',
-                      },
-                      _h('path', {
-                        d: 'M14.5632 7.72544L10.539 13.2587C10.2728 13.6247 9.72696 13.6247 9.46073 13.2587L5.43658 7.72544C5.11611 7.28479 5.43088 6.66666 5.97573 6.66666L14.024 6.66666C14.5689 6.66666 14.8837 7.28479 14.5632 7.72544Z',
-                        fill: '#6B7075',
-                      }),
-                    ),
-                  ),
-              showCheckbox
-                ? _h('div', {
-                    class: `checkbox ${checked ? 'checkbox--checked' : ''} ${indeterminate ? 'checkbox--indeterminate' : ''}`,
-                    onClick: onChange,
-                  })
-                : null,
-              getSlot(this, 'content')
-                ? getSlot(this, 'content')?.(node)
-                : _h(
-                    'div',
-                    {
-                      class: 'virt-tree-node-content',
-                    },
-                    node.label,
-                  ),
-            ],
+            [slotIcon, slotCheckbox, slotContent],
           );
     };
 

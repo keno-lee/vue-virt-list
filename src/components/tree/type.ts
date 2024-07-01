@@ -8,7 +8,7 @@ export interface ITreeNode<T = TreeNodeData> {
   parent?: ITreeNode;
   children?: ITreeNode[];
   data: T;
-  disabled?: boolean;
+  disableCheckbox?: boolean;
   label?: string;
   isLeaf?: boolean;
 }
@@ -17,7 +17,7 @@ export interface ITreeOptionProps {
   children?: string;
   label?: string;
   value?: string;
-  disabled?: string;
+  disableCheckbox?: string;
 }
 
 export interface ITreeInfo {

@@ -3,16 +3,16 @@ import { ref, watch, type Ref, type ShallowRef } from 'vue-demi';
 import type { ITreeNode, TreeKey } from './type';
 
 export const useSticky = (
-  virListRef: Ref<InstanceType<typeof VirtList> | null>,
+  virtListRef: Ref<InstanceType<typeof VirtList> | null>,
   expandedKeysSet: ShallowRef<Set<TreeKey>>,
 ) => {
   const stickyStack = ref<TreeKey[]>([]);
 
   watch(
-    () => (virListRef.value ? virListRef.value.reactiveData.inViewBegin : -1),
+    () => (virtListRef.value ? virtListRef.value.reactiveData.inViewBegin : -1),
     (newViewBegin) => {
-      if (!virListRef.value) return;
-      const viewFirstBeginItem = virListRef.value.list[newViewBegin];
+      if (!virtListRef.value) return;
+      const viewFirstBeginItem = virtListRef.value.list[newViewBegin];
       if (!viewFirstBeginItem) return;
       setStickyStack(viewFirstBeginItem);
     },

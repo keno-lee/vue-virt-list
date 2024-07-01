@@ -81,7 +81,7 @@ export const useCheck = (
       const children = node.children;
       if (children) {
         children.forEach((childNode) => {
-          if (!childNode.disabled) {
+          if (!childNode.disableCheckbox) {
             toggle(childNode, checked);
           }
         });
