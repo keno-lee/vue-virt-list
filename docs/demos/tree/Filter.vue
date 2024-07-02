@@ -8,9 +8,9 @@ type Data = {
   children?: Data;
 }[];
 
-const treeProps = {
-  value: 'id',
-  label: 'name',
+const customFieldNames = {
+  key: 'id',
+  title: 'name',
 };
 
 const data = shallowRef<Data>([]);
@@ -52,7 +52,7 @@ const onFilter = () => {
     <VirtTree
       ref="virtTreeRef"
       :data="data"
-      :fieldNames="treeProps"
+      :fieldNames="customFieldNames"
       :indent="20"
       :filter-method="filterMethod"
     >

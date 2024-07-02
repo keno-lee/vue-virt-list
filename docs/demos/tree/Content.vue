@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { title } from 'process';
 import { onMounted, ref, shallowRef } from 'vue';
 import { VirtTree } from 'vue-virt-list';
 
@@ -32,46 +31,38 @@ onMounted(() => {
 
 const virtTreeRef = ref<typeof VirtTree>();
 const key = ref<number>(0);
-const onCollapseAll = () => {
-  virtTreeRef.value.collapseAllNods([]);
-};
 
-const onExpandAll = () => {
-  virtTreeRef.value.expandAllNodes();
+const filterMethod = (query: string, node: any) => {
+  return node.name.includes(query);
 };
-
-const expandNode = () => {
-  virtTreeRef.value.expandNodeByKey(key.value);
-};
-const collapseNode = () => {
-  virtTreeRef.value.collapseNodeByKey(key.value);
-};
-
-const checkedKeys = ref<number | string[]>(['1']);
 </script>
 
 <template>
   <div class="demo-tree">
-    <div class="tree-btn-container">
-      <div style="display: flex; gap: 8px">
-        <div class="btn-item" @click="onCollapseAll">折叠所有</div>
-        <div class="btn-item" @click="onExpandAll">展开所有</div>
-      </div>
-      <div class="input-container">
-        <div class="input-label">操作指定节点：</div>
-        <input v-model="key" />
-        <div class="btn-item" @click="expandNode">展开</div>
-        <div class="btn-item" @click="collapseNode">折叠</div>
-      </div>
-    </div>
     <VirtTree
       ref="virtTreeRef"
       :data="data"
       :fieldNames="customFieldNames"
-      :checkedKeys="checkedKeys"
       :indent="20"
-      showCheckbox
+      :filter-method="filterMethod"
     >
+      <template #icon>
+        <div style="height: 20px; width: 20px">
+          <svg
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="currentColor"
+            class="arco-icon arco-icon-down"
+            stroke-width="4"
+            stroke-linecap="butt"
+            stroke-linejoin="miter"
+          >
+            <path d="M39.6 17.443 24.043 33 8.487 17.443"></path>
+          </svg>
+        </div>
+      </template>
+
       <template #empty>
         <div style="padding: 16px">暂无数据</div>
       </template>

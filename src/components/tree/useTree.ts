@@ -16,7 +16,7 @@ import type {
   TreeNodeData,
   TreeData,
   TreeKey,
-  ITreeOptionProps,
+  TreeFieldNames,
   CheckedInfo,
 } from './type';
 import { useCheck } from './useCheck';
@@ -24,9 +24,9 @@ import { useFilter } from './useFilter';
 import { useSelect } from './useSelect';
 
 // enums
-export enum TreeOptionsEnum {
+export enum FieldNamesEnum {
   KEY = 'id',
-  LABEL = 'label',
+  TITLE = 'title',
   CHILDREN = 'children',
 }
 
@@ -34,7 +34,7 @@ export enum TreeOptionsEnum {
 export const NODE_CLICK = 'node-click';
 export const NODE_EXPAND = 'node-expand';
 export const NODE_COLLAPSE = 'node-collapse';
-export const CURRENT_CHANGE = 'current-change';
+export const NODE_SELECT = 'select';
 export const NODE_CHECK = 'node-check';
 export const NODE_CHECK_CHANGE = 'node-check-change';
 export const TREE_SCROLL = 'scroll';
@@ -44,7 +44,7 @@ export const TreeEmits = {
     data && node && e,
   [NODE_EXPAND]: (data: TreeNodeData, node: ITreeNode) => data && node,
   [NODE_COLLAPSE]: (data: TreeNodeData, node: ITreeNode) => data && node,
-  [CURRENT_CHANGE]: (data: TreeNodeData, node: ITreeNode) => data && node,
+  [NODE_SELECT]: (selectedKeys: TreeKey[], data: any) => selectedKeys && data,
   [NODE_CHECK]: (data: TreeNodeData, checkedInfo: CheckedInfo) =>
     data && checkedInfo,
   [NODE_CHECK_CHANGE]: (data: TreeNodeData, checked: boolean) =>
@@ -52,15 +52,15 @@ export const TreeEmits = {
   [TREE_SCROLL]: (e: Event) => e,
 };
 
-export const treeProps = {
+export const customFieldNames = {
   data: {
     type: Object as PropType<TreeData>,
     required: true,
     default: () => [],
   },
   fieldNames: {
-    type: Object as PropType<ITreeOptionProps>,
-    default: () => ({ children: 'children', label: 'label', value: 'value' }),
+    type: Object as PropType<TreeFieldNames>,
+    default: () => ({ key: 'id', title: 'title', children: 'children' }),
   },
   defaultExpandedKeys: {
     type: Array as PropType<TreeKey[]>,
@@ -74,10 +74,6 @@ export const treeProps = {
     type: Number,
     default: 16,
   },
-  currentNodeKey: {
-    type: [String, Number] as PropType<TreeKey>,
-    default: '',
-  },
   minSize: {
     type: Number,
     default: 10,
@@ -85,6 +81,11 @@ export const treeProps = {
   expandOnClickNode: {
     type: Boolean,
     default: true,
+  },
+
+  checkedKeys: {
+    type: Array as PropType<TreeKey[]>,
+    default: () => [],
   },
   showCheckbox: {
     type: Boolean,
@@ -97,7 +98,16 @@ export const treeProps = {
   filterMethod: {
     type: Function as PropType<(query: string, node: TreeNodeData) => boolean>,
   },
+
+  selectedKeys: {
+    type: Array as PropType<TreeKey[]>,
+    default: () => [],
+  },
   selectable: {
+    type: Boolean,
+    default: false,
+  },
+  multiple: {
     type: Boolean,
     default: false,
   },
@@ -109,7 +119,7 @@ export const TreeNodeEmits = {
     node && typeof checked === 'boolean',
 };
 
-export type TreeProps = ExtractPropTypes<typeof treeProps>;
+export type TreeProps = ExtractPropTypes<typeof customFieldNames>;
 
 export const useTree = (
   props: TreeProps,
@@ -128,8 +138,6 @@ export const useTree = (
     emits,
     tree,
   );
-
-  const { isSelected } = useSelect(props, emits, tree);
 
   const { doFilter, hiddenNodeKeySet, isForceHiddenExpandIcon } = useFilter(
     props,
@@ -174,20 +182,22 @@ export const useTree = (
     return flattenNodes;
   });
 
-  const valueKey = computed(() => {
-    return props.fieldNames?.value || TreeOptionsEnum.KEY;
+  const { isSelected, toggleSelect } = useSelect(props, emits, flattenList);
+
+  const KEY = computed(() => {
+    return props.fieldNames?.key || FieldNamesEnum.KEY;
+  });
+  const titleKey = computed(() => {
+    return props.fieldNames?.title || FieldNamesEnum.TITLE;
   });
   const childrenKey = computed(() => {
-    return props.fieldNames?.children || TreeOptionsEnum.CHILDREN;
-  });
-  const labelKey = computed(() => {
-    return props.fieldNames?.label || TreeOptionsEnum.LABEL;
+    return props.fieldNames?.children || FieldNamesEnum.CHILDREN;
   });
 
-  const getKey = (node: TreeNodeData) => (!node ? '' : node[valueKey.value]);
+  const getKey = (node: TreeNodeData) => (!node ? '' : node[KEY.value]);
   const getChildren = (node: TreeNodeData) =>
     !node ? [] : node[childrenKey.value];
-  const getLabel = (node: TreeNodeData) => (!node ? '' : node[labelKey.value]);
+  const getLabel = (node: TreeNodeData) => (!node ? '' : node[titleKey.value]);
 
   const createTree = (data: TreeData): ITreeInfo => {
     const treeNodesMap = new Map<TreeKey, ITreeNode>();
@@ -199,13 +209,13 @@ export const useTree = (
       for (const rawNode of nodes) {
         const children = getChildren(rawNode);
         const key = getKey(rawNode);
-        const label = getLabel(rawNode);
+        const title = getLabel(rawNode);
         const node: ITreeNode = {
           data: rawNode,
           key,
           parent,
           level,
-          label,
+          title,
           isLeaf: !children || children.length === 0,
         };
         if (children && children.length) {
@@ -269,15 +279,13 @@ export const useTree = (
     return expandedKeysSet.value.has(node.key);
   };
 
-  const isCurrent = (node: ITreeNode) => {
-    return !!currentNode.value && currentNode.value === node.key;
-  };
-
-  const onClickTreeNode = (node: ITreeNode, e: MouseEvent) => {
+  const onSelect = (node: ITreeNode, e: MouseEvent) => {
     emits(NODE_CLICK, node.data, node, e);
-    if (!isCurrent(node)) {
-      emits(CURRENT_CHANGE, node.data, node);
-      currentNode.value = node.key;
+
+    // 如果支持selectable，那么就不展开
+    if (props.selectable) {
+      toggleSelect(node);
+      return;
     }
     if (props.expandOnClickNode) {
       toggleExpand(node);
@@ -384,16 +392,6 @@ export const useTree = (
     },
   );
 
-  watch(
-    () => props.currentNodeKey,
-    (key) => {
-      currentNode.value = key;
-    },
-    {
-      immediate: true,
-    },
-  );
-
   return {
     virtListRef,
     tree,
@@ -407,9 +405,8 @@ export const useTree = (
     toggleExpand,
     expandNode,
     collapseNode,
-    onClickTreeNode,
     isExpanded,
-    isCurrent,
+
     getCurrentNode,
     getCurrentKey,
     setCurrentKey,
@@ -428,5 +425,6 @@ export const useTree = (
     onCheckChange,
 
     isSelected,
+    onSelect,
   };
 };

@@ -8,9 +8,9 @@ type Data = {
   children?: Data;
 }[];
 
-const treeProps = {
-  value: 'id',
-  label: 'name',
+const customFieldNames = {
+  key: 'id',
+  title: 'name',
 };
 
 const data = shallowRef<Data>([]);
@@ -64,10 +64,10 @@ const collapseNode = () => {
     <VirtTree
       ref="virtTreeRef"
       :data="data"
-      :fieldNames="treeProps"
-      currentNodeKey="4"
+      :fieldNames="customFieldNames"
       :defaultExpandedKeys="['4']"
       :indent="20"
+      selectable
       stickyHeaderStyle="text-align: center; height: 40px; background: #42b983;"
       headerStyle="text-align: center; height: 40px; background: cyan"
       footerStyle="text-align: center; height: 40px; background: cyan"
@@ -107,7 +107,7 @@ const collapseNode = () => {
         </div>
       </template>
       <template #content="{ node }">
-        <div style="color: aqua">{{ node.label }}</div>
+        <div style="color: aqua">{{ node.title }}</div>
       </template>
     </VirtTree>
   </div>

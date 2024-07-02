@@ -18,10 +18,6 @@ export const treeNodeProps = {
     type: Boolean,
     default: false,
   },
-  current: {
-    type: Boolean,
-    default: false,
-  },
   indent: {
     type: Number,
     default: 16,
@@ -44,6 +40,10 @@ export const treeNodeProps = {
     default: false,
   },
 
+  selectable: {
+    type: Boolean,
+    default: false,
+  },
   isSelected: {
     type: Boolean,
     default: false,
@@ -58,7 +58,7 @@ export default defineComponent({
   setup(props: TreeNodeProps, ctx: SetupContext) {
     const handleClick = (e: Event) => {
       e.stopPropagation();
-      ctx.emit('click', props.node, e);
+      ctx.emit('select', props.node, e);
     };
 
     const handleToggle = (e: Event) => {
@@ -80,7 +80,6 @@ export default defineComponent({
   render() {
     const { handleClick, onChange, handleToggle } = this;
     const {
-      current,
       indent,
       isChecked,
       showCheckbox,
@@ -88,38 +87,39 @@ export default defineComponent({
       expanded,
       node,
       hiddenExpandIcon,
-
       isSelected,
     } = this.$props as TreeNodeProps;
 
-    const slotIcon = getSlot(this, 'icon')
-      ? getSlot(this, 'icon')?.(node, expanded)
-      : _h(
-          'div',
-          {
-            class: `virt-tree-icon ${expanded ? 'virt-tree-icon--expanded' : ''}`,
-            style: {
-              opacity: node.isLeaf || hiddenExpandIcon ? 0 : 1,
-            },
-            attrs: {
-              onClick: handleToggle,
-            },
-          },
-          _h(
-            'svg',
-            {
-              width: '20',
-              height: '20',
-              viewBox: '0 0 20 20',
-              fill: 'none',
-              xmlns: 'http://www.w3.org/2000/svg',
-            },
-            _h('path', {
-              d: 'M14.5632 7.72544L10.539 13.2587C10.2728 13.6247 9.72696 13.6247 9.46073 13.2587L5.43658 7.72544C5.11611 7.28479 5.43088 6.66666 5.97573 6.66666L14.024 6.66666C14.5689 6.66666 14.8837 7.28479 14.5632 7.72544Z',
-              fill: '#6B7075',
-            }),
-          ),
-        );
+    const defaultIcon = _h(
+      'svg',
+      {
+        width: '20',
+        height: '20',
+        viewBox: '0 0 20 20',
+        fill: 'none',
+        xmlns: 'http://www.w3.org/2000/svg',
+      },
+      _h('path', {
+        d: 'M14.5632 7.72544L10.539 13.2587C10.2728 13.6247 9.72696 13.6247 9.46073 13.2587L5.43658 7.72544C5.11611 7.28479 5.43088 6.66666 5.97573 6.66666L14.024 6.66666C14.5689 6.66666 14.8837 7.28479 14.5632 7.72544Z',
+        fill: '#6B7075',
+      }),
+    );
+
+    const slotIcon = _h(
+      'div',
+      {
+        class: `virt-tree-icon ${expanded ? 'is-expanded' : ''}`,
+        style: {
+          opacity: node.isLeaf || hiddenExpandIcon ? 0 : 1,
+        },
+        attrs: {
+          onClick: handleToggle,
+        },
+      },
+      getSlot(this, 'icon')
+        ? getSlot(this, 'icon')?.(node, expanded)
+        : defaultIcon,
+    );
 
     const slotCheckbox = showCheckbox
       ? _h('div', {
@@ -135,33 +135,24 @@ export default defineComponent({
           {
             class: 'virt-tree-node-content',
           },
-          node.label,
+          node.title,
         );
 
-    const renderDefault = () => {
-      return getSlot(this, 'default')
-        ? getSlot(this, 'default')?.(node, node!.data, expanded)
-        : _h(
-            'div',
-            {
-              class: {
-                'virt-tree-item-container': true,
-                // TODO 改成 is-selected
-                // 'virt-tree-item-container--current': current,
-                'is-selected': isSelected,
-              },
-              style: { paddingLeft: `${(node!.level - 1) * indent}px` },
+    return getSlot(this, 'default')
+      ? getSlot(this, 'default')?.(node, node!.data, expanded)
+      : _h(
+          'div',
+          {
+            class: {
+              'virt-tree-item-container': true,
+              'is-selected': isSelected,
             },
-            [slotIcon, slotCheckbox, slotContent],
-          );
-    };
-
-    return _h(
-      'div',
-      {
-        onClick: handleClick,
-      },
-      [renderDefault()],
-    );
+            style: { paddingLeft: `${(node!.level - 1) * indent}px` },
+            attrs: {
+              onClick: handleClick,
+            },
+          },
+          [slotIcon, slotCheckbox, slotContent],
+        );
   },
 });

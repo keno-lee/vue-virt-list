@@ -12,25 +12,21 @@
   }
 }
 
-.virt-tree-item-container > .virt-tree-icon {
+/* Tree Icon */
+.virt-tree-icon {
   transform: rotate(-90deg);
   transition: all 0.5s ease;
 }
-
-.virt-tree-icon.virt-tree-icon--expanded {
+.virt-tree-icon.is-expanded {
   transform: rotate(0deg);
 }
+
 .virt-tree-node-content {
   flex: 1;
 }
-
 .virt-tree-item-container.is-selected {
-  background-color: #f5f7fa;
-  color: rgb(96, 98, 102);
-}
-/* TODO 要干掉 */
-.virt-tree-item-container--current {
-  background-color: #f5f7fa;
+  /* background-color: #f5f7fa; */
+  background-color: cyan;
   color: rgb(96, 98, 102);
 }
 

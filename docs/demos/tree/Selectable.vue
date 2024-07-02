@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { title } from 'process';
 import { onMounted, ref, shallowRef } from 'vue';
 import { VirtTree } from 'vue-virt-list';
 
@@ -31,50 +30,27 @@ onMounted(() => {
 });
 
 const virtTreeRef = ref<typeof VirtTree>();
-const key = ref<number>(0);
-const onCollapseAll = () => {
-  virtTreeRef.value.collapseAllNods([]);
-};
 
-const onExpandAll = () => {
-  virtTreeRef.value.expandAllNodes();
-};
+// 可传可不传
+const selectedKeys = ref<number | string[]>(['1']);
 
-const expandNode = () => {
-  virtTreeRef.value.expandNodeByKey(key.value);
-};
-const collapseNode = () => {
-  virtTreeRef.value.collapseNodeByKey(key.value);
-};
-
-const checkedKeys = ref<number | string[]>(['1']);
+function onSelect(keys: number[]) {
+  console.log('keys', keys);
+}
 </script>
 
 <template>
   <div class="demo-tree">
-    <div class="tree-btn-container">
-      <div style="display: flex; gap: 8px">
-        <div class="btn-item" @click="onCollapseAll">折叠所有</div>
-        <div class="btn-item" @click="onExpandAll">展开所有</div>
-      </div>
-      <div class="input-container">
-        <div class="input-label">操作指定节点：</div>
-        <input v-model="key" />
-        <div class="btn-item" @click="expandNode">展开</div>
-        <div class="btn-item" @click="collapseNode">折叠</div>
-      </div>
-    </div>
     <VirtTree
       ref="virtTreeRef"
       :data="data"
       :fieldNames="customFieldNames"
-      :checkedKeys="checkedKeys"
       :indent="20"
-      showCheckbox
+      selectable
+      multiple
+      :selectedKeys="selectedKeys"
+      @select="onSelect"
     >
-      <template #empty>
-        <div style="padding: 16px">暂无数据</div>
-      </template>
     </VirtTree>
   </div>
 </template>

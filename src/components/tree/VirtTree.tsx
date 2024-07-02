@@ -1,5 +1,10 @@
 import { defineComponent, type SetupContext } from 'vue-demi';
-import { useTree, treeProps, type TreeProps, TreeEmits } from './useTree';
+import {
+  useTree,
+  customFieldNames,
+  type TreeProps,
+  TreeEmits,
+} from './useTree';
 import TreeNode from './VirtTreeNode';
 import { VirtList } from '../../VirtList';
 import { _h, _h2Slot, getSlot } from '../../util';
@@ -7,7 +12,7 @@ import type { ITreeNode, TreeNodeData } from './type';
 
 export default defineComponent({
   name: 'VirtTree',
-  props: treeProps,
+  props: customFieldNames,
   setup(props: TreeProps, context: SetupContext) {
     const emits = context.emit as SetupContext<typeof TreeEmits>['emit'];
     return useTree(props, emits);
@@ -15,20 +20,21 @@ export default defineComponent({
   render() {
     const {
       flattenList,
-      onClickTreeNode,
       isExpanded,
       onScroll,
-      isCurrent,
+
       isChecked,
       isIndeterminate,
       onCheckChange,
       toggleExpand,
       isForceHiddenExpandIcon,
 
+      onSelect,
       isSelected,
     } = this;
 
-    const { minSize, showCheckbox, indent } = this.$props as TreeProps;
+    const { minSize, showCheckbox, selectable, indent } = this
+      .$props as TreeProps;
 
     const renderTreeNode = ({
       itemData,
@@ -45,11 +51,11 @@ export default defineComponent({
             showCheckbox,
             hiddenExpandIcon: isForceHiddenExpandIcon(itemData),
             expanded: isExpanded(itemData),
-            current: isCurrent(itemData),
             isChecked: isChecked(itemData),
+            selectable,
             isSelected: isSelected(itemData),
             indeterminate: isIndeterminate(itemData),
-            onClick: onClickTreeNode,
+            onSelect: onSelect,
             onCheck: onCheckChange,
             onToggle: (node: ITreeNode) => toggleExpand(node),
           },

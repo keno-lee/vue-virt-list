@@ -9,14 +9,14 @@ export interface ITreeNode<T = TreeNodeData> {
   children?: ITreeNode[];
   data: T;
   disableCheckbox?: boolean;
-  label?: string;
+  title?: string;
   isLeaf?: boolean;
 }
 
-export interface ITreeOptionProps {
+export interface TreeFieldNames {
+  key?: string;
+  title?: string;
   children?: string;
-  label?: string;
-  value?: string;
   disableCheckbox?: string;
 }
 
