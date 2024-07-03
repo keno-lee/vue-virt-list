@@ -46,13 +46,6 @@ const filterMethod = (query: string, node: any) => {
       :indent="20"
       :filter-method="filterMethod"
     >
-      <template #content="{ node, data }">
-        <div>
-          <span>level: {{ node.level }}; </span>
-          <span>title: {{ node.data.name }}</span>
-        </div>
-      </template>
-
       <template #empty>
         <div style="padding: 16px">暂无数据</div>
       </template>

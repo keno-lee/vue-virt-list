@@ -1,4 +1,4 @@
-.virt-tree-item-container {
+.virt-tree-node {
   width: 100%;
   display: flex;
   align-items: center;
@@ -6,28 +6,40 @@
   padding: 8px 4px;
   border-radius: 1px 1px 0 0;
   cursor: pointer;
-  &:hover {
-    background-color: #f5f7fa;
-    color: rgb(96, 98, 102);
-  }
 }
-
-/* Tree Icon */
-.virt-tree-icon {
-  transform: rotate(-90deg);
-  transition: all 0.5s ease;
+.virt-tree-node:hover {
+  background-color: #f5f7fa;
+  color: rgb(96, 98, 102);
 }
-.virt-tree-icon.is-expanded {
-  transform: rotate(0deg);
-}
-
-.virt-tree-node-content {
-  flex: 1;
-}
-.virt-tree-item-container.is-selected {
+.virt-tree-node.is-selected {
   /* background-color: #f5f7fa; */
   background-color: cyan;
   color: rgb(96, 98, 102);
+}
+.virt-tree-node.is-disabled {
+  color: #c0c4cc;
+  background-color: burlywood;
+  cursor: not-allowed;
+}
+
+/* Tree Icon */
+.virt-tree-icon-wrapper {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+.virt-tree-icon-wrapper:hover {
+  background-color: red;
+}
+.virt-tree-icon-wrapper .virt-tree-icon {
+  transform: rotate(-90deg);
+  transition: all 0.5s ease;
+}
+.virt-tree-icon-wrapper.is-expanded .virt-tree-icon {
+  transform: rotate(0deg);
 }
 
 .checkbox {
@@ -81,4 +93,8 @@
   left: 0;
   right: 0;
   top: 5px;
+}
+
+.virt-tree-node-content {
+  flex: 1;
 }

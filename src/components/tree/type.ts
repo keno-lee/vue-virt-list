@@ -8,6 +8,7 @@ export interface ITreeNode<T = TreeNodeData> {
   parent?: ITreeNode;
   children?: ITreeNode[];
   data: T;
+  disabled?: boolean;
   disableCheckbox?: boolean;
   title?: string;
   isLeaf?: boolean;
@@ -17,6 +18,7 @@ export interface TreeFieldNames {
   key?: string;
   title?: string;
   children?: string;
+  disabled?: string;
   disableCheckbox?: string;
 }
 

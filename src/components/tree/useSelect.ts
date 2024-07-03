@@ -27,6 +27,9 @@ export const useSelect = (
   const isSelected = (node: ITreeNode) => selectedKeysSet.value.has(node.key);
 
   const toggleSelect = (node: ITreeNode) => {
+    if (node.disabled) {
+      return;
+    }
     const selected = isSelected(node);
     if (isSelected(node)) {
       selectedKeysSet.value.delete(node.key);

@@ -108,7 +108,10 @@ export default defineComponent({
     const slotIcon = _h(
       'div',
       {
-        class: `virt-tree-icon ${expanded ? 'is-expanded' : ''}`,
+        class: {
+          'virt-tree-icon-wrapper': true,
+          'is-expanded': expanded,
+        },
         style: {
           opacity: node.isLeaf || hiddenExpandIcon ? 0 : 1,
         },
@@ -116,9 +119,17 @@ export default defineComponent({
           onClick: handleToggle,
         },
       },
-      getSlot(this, 'icon')
-        ? getSlot(this, 'icon')?.(node, expanded)
-        : defaultIcon,
+      [
+        _h(
+          'div',
+          {
+            class: 'virt-tree-icon',
+          },
+          getSlot(this, 'icon')
+            ? getSlot(this, 'icon')?.(node, expanded)
+            : defaultIcon,
+        ),
+      ],
     );
 
     const slotCheckbox = showCheckbox
@@ -144,8 +155,9 @@ export default defineComponent({
           'div',
           {
             class: {
-              'virt-tree-item-container': true,
+              'virt-tree-node': true,
               'is-selected': isSelected,
+              'is-disabled': node.disabled,
             },
             style: { paddingLeft: `${(node!.level - 1) * indent}px` },
             attrs: {

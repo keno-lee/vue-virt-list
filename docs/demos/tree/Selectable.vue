@@ -5,6 +5,7 @@ import { VirtTree } from 'vue-virt-list';
 type Data = {
   id: string | number;
   name: string;
+  disabled?: boolean;
   children?: Data;
 }[];
 
@@ -27,12 +28,14 @@ onMounted(() => {
       })),
     })),
   }));
+
+  data.value[0].disabled = true;
 });
 
 const virtTreeRef = ref<typeof VirtTree>();
 
 // 可传可不传
-const selectedKeys = ref<number | string[]>(['1']);
+const selectedKeys = ref<(number | string)[]>(['1']);
 
 function onSelect(keys: number[]) {
   console.log('keys', keys);
@@ -41,6 +44,10 @@ function onSelect(keys: number[]) {
 
 <template>
   <div class="demo-tree">
+    <div>
+      <span>选中keys：</span>
+      <span>[{{ selectedKeys.join(', ') }}]</span>
+    </div>
     <VirtTree
       ref="virtTreeRef"
       :data="data"

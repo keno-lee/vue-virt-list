@@ -24,12 +24,20 @@ import { useFilter } from './useFilter';
 import { useSelect } from './useSelect';
 
 // enums
-export enum FieldNamesEnum {
-  KEY = 'id',
-  TITLE = 'title',
-  CHILDREN = 'children',
-}
+// export enum FieldNamesEnum {
+//   KEY = 'id',
+//   TITLE = 'title',
+//   CHILDREN = 'children',
+//   Disabled = 'disabled',
+// }
 
+const defaultFiledNames: Required<TreeFieldNames> = {
+  key: 'key',
+  title: 'title',
+  children: 'children',
+  disabled: 'disabled',
+  disableCheckbox: 'disableCheckbox',
+};
 // emits
 export const NODE_CLICK = 'node-click';
 export const NODE_EXPAND = 'node-expand';
@@ -60,7 +68,7 @@ export const customFieldNames = {
   },
   fieldNames: {
     type: Object as PropType<TreeFieldNames>,
-    default: () => ({ key: 'id', title: 'title', children: 'children' }),
+    default: () => ({}),
   },
   defaultExpandedKeys: {
     type: Array as PropType<TreeKey[]>,
@@ -184,20 +192,20 @@ export const useTree = (
 
   const { isSelected, toggleSelect } = useSelect(props, emits, flattenList);
 
-  const KEY = computed(() => {
-    return props.fieldNames?.key || FieldNamesEnum.KEY;
-  });
-  const titleKey = computed(() => {
-    return props.fieldNames?.title || FieldNamesEnum.TITLE;
-  });
-  const childrenKey = computed(() => {
-    return props.fieldNames?.children || FieldNamesEnum.CHILDREN;
-  });
-
-  const getKey = (node: TreeNodeData) => (!node ? '' : node[KEY.value]);
+  const mergeFieldNames = {
+    ...defaultFiledNames,
+    ...props.fieldNames,
+  };
+  const getKey = (node: TreeNodeData) =>
+    !node ? '' : node[mergeFieldNames.key];
   const getChildren = (node: TreeNodeData) =>
-    !node ? [] : node[childrenKey.value];
-  const getLabel = (node: TreeNodeData) => (!node ? '' : node[titleKey.value]);
+    !node ? [] : node[mergeFieldNames.children];
+  const getLabel = (node: TreeNodeData) =>
+    !node ? '' : node[mergeFieldNames.title];
+  const getDisabled = (node: TreeNodeData) =>
+    !node ? '' : node[mergeFieldNames.disabled];
+  const getDisabledCheckbox = (node: TreeNodeData) =>
+    !node ? '' : node[mergeFieldNames.disableCheckbox];
 
   const createTree = (data: TreeData): ITreeInfo => {
     const treeNodesMap = new Map<TreeKey, ITreeNode>();
@@ -210,12 +218,16 @@ export const useTree = (
         const children = getChildren(rawNode);
         const key = getKey(rawNode);
         const title = getLabel(rawNode);
+        const disabled = getDisabled(rawNode);
+        const disableCheckbox = getDisabled(rawNode);
         const node: ITreeNode = {
           data: rawNode,
           key,
           parent,
           level,
           title,
+          disabled,
+          disableCheckbox,
           isLeaf: !children || children.length === 0,
         };
         if (children && children.length) {

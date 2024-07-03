@@ -2,15 +2,7 @@
 
 ## Basic
 
-## ICON Slot
-
-提供展开状态下的图标
-
-<!<< @/demos/tree/Icon.vue
-
-## Content Slot
-
-<!<< @/demos/tree/Icon.vue
+<!<< @/demos/tree/Basic.vue
 
 ## Selectable
 
@@ -33,6 +25,18 @@ type Props = {
 
 <!<< @/demos/tree/Filter.vue
 
-## 全部自定义
+## ICON Slot
 
-<!<< @/demos/tree/Main.vue
+提供展开状态下的图标
+
+<!<< @/demos/tree/Icon.vue
+
+## Content Slot
+
+<!<< @/demos/tree/Content.vue
+
+## Default Slot
+
+自定义整个node节点
+
+<!<< @/demos/tree/Default.vue
