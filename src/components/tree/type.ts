@@ -12,6 +12,8 @@ export interface ITreeNode<T = TreeNodeData> {
   disableCheckbox?: boolean;
   title?: string;
   isLeaf?: boolean;
+  isLast?: boolean;
+  isParentLast?: boolean;
 }
 
 export interface TreeFieldNames {

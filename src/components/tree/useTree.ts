@@ -46,6 +46,7 @@ export const NODE_SELECT = 'select';
 export const NODE_CHECK = 'node-check';
 export const NODE_CHECK_CHANGE = 'node-check-change';
 export const TREE_SCROLL = 'scroll';
+export const UPDATE_CHECKED_KEYS = 'update:checkedKeys';
 
 export const TreeEmits = {
   [NODE_CLICK]: (data: TreeNodeData, node: ITreeNode, e: MouseEvent) =>
@@ -58,6 +59,7 @@ export const TreeEmits = {
   [NODE_CHECK_CHANGE]: (data: TreeNodeData, checked: boolean) =>
     data && typeof checked === 'boolean',
   [TREE_SCROLL]: (e: Event) => e,
+  [UPDATE_CHECKED_KEYS]: (checkedKeys: TreeKey[]) => checkedKeys,
 };
 
 export const customFieldNames = {
@@ -71,10 +73,6 @@ export const customFieldNames = {
     default: () => ({}),
   },
   defaultExpandedKeys: {
-    type: Array as PropType<TreeKey[]>,
-    default: () => [],
-  },
-  defaultCheckedKeys: {
     type: Array as PropType<TreeKey[]>,
     default: () => [],
   },
@@ -95,11 +93,15 @@ export const customFieldNames = {
     type: Array as PropType<TreeKey[]>,
     default: () => [],
   },
-  showCheckbox: {
+  checkable: {
     type: Boolean,
     default: false,
   },
   disableCheckbox: {
+    type: Boolean,
+    default: false,
+  },
+  checkOnClickNode: {
     type: Boolean,
     default: false,
   },
@@ -118,6 +120,18 @@ export const customFieldNames = {
   multiple: {
     type: Boolean,
     default: false,
+  },
+  defaultExpandAll: {
+    type: Boolean,
+    default: false,
+  },
+  checkedStrictly: {
+    type: Boolean,
+    default: false,
+  },
+  itemHeight: {
+    type: Number,
+    default: 32,
   },
 };
 
@@ -180,7 +194,9 @@ export const useTree = (
           if (children) {
             const length = children.length;
             for (let i = length - 1; i >= 0; --i) {
-              stack.push(children[i]);
+              const childNode = children[i];
+              childNode.isLast = i === length - 1;
+              stack.push(childNode);
             }
           }
         }
@@ -214,12 +230,14 @@ export const useTree = (
     let maxLevel = 1;
     const flat = (nodes: TreeData, level: number = 1, parent?: ITreeNode) => {
       const currNodes: ITreeNode[] = [];
+      let index = 0;
       for (const rawNode of nodes) {
+        index++;
         const children = getChildren(rawNode);
         const key = getKey(rawNode);
         const title = getLabel(rawNode);
         const disabled = getDisabled(rawNode);
-        const disableCheckbox = getDisabled(rawNode);
+        const disableCheckbox = getDisabledCheckbox(rawNode);
         const node: ITreeNode = {
           data: rawNode,
           key,
@@ -232,6 +250,9 @@ export const useTree = (
         };
         if (children && children.length) {
           node.children = flat(children, level + 1, node);
+        }
+        if (props.defaultExpandAll && children && children.length > 0) {
+          expandedKeysSet.value.add(node.key);
         }
         parentNodeKeys.add(node.key);
         currNodes.push(node);
@@ -295,8 +316,10 @@ export const useTree = (
     emits(NODE_CLICK, node.data, node, e);
 
     // 如果支持selectable，那么就不展开
-    if (props.selectable) {
-      toggleSelect(node);
+    if (props.selectable || props.checkOnClickNode) {
+      if (props.selectable) {
+        toggleSelect(node);
+      }
       return;
     }
     if (props.expandOnClickNode) {

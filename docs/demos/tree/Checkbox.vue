@@ -25,6 +25,14 @@ onMounted(() => {
       children: Array.from({ length: 2 }).map((_, indexChild) => ({
         id: `${i}-${index}-${indexChild}`,
         name: `Node-${i}-${index}-${indexChild}`,
+        disableCheckbox: indexChild % 2 === 0,
+        children:
+          indexChild % 2 !== 0
+            ? []
+            : Array.from({ length: 2 }).map((_, indexChild) => ({
+                id: `${i}-${index}-${indexChild}-${indexChild}`,
+                name: `Node-${i}-${index}-${indexChild}-${indexChild}`,
+              })),
       })),
     })),
   }));
@@ -48,6 +56,10 @@ const collapseNode = () => {
 };
 
 const checkedKeys = ref<number | string[]>(['1']);
+
+const onCheckChange = (data, checkedInfo) => {
+  console.warn('data', data, checkedInfo);
+};
 </script>
 
 <template>
@@ -64,13 +76,16 @@ const checkedKeys = ref<number | string[]>(['1']);
         <div class="btn-item" @click="collapseNode">折叠</div>
       </div>
     </div>
+    <div>{{ checkedKeys }}</div>
     <VirtTree
       ref="virtTreeRef"
       :data="data"
       :fieldNames="customFieldNames"
-      :checkedKeys="checkedKeys"
       :indent="20"
-      showCheckbox
+      checkable
+      checkOnClickNode
+      v-model:checkedKeys="checkedKeys"
+      @node-check="onCheckChange"
     >
       <template #empty>
         <div style="padding: 16px">暂无数据</div>

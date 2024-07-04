@@ -33,8 +33,14 @@ export default defineComponent({
       isSelected,
     } = this;
 
-    const { minSize, showCheckbox, selectable, indent } = this
-      .$props as TreeProps;
+    const {
+      minSize,
+      checkable,
+      selectable,
+      indent,
+      itemHeight,
+      checkOnClickNode,
+    } = this.$props as TreeProps;
 
     const renderTreeNode = ({
       itemData,
@@ -48,16 +54,21 @@ export default defineComponent({
           attrs: {
             node: itemData,
             indent,
-            showCheckbox,
+            checkable,
             hiddenExpandIcon: isForceHiddenExpandIcon(itemData),
             expanded: isExpanded(itemData),
             isChecked: isChecked(itemData),
             selectable,
             isSelected: isSelected(itemData),
             indeterminate: isIndeterminate(itemData),
+            disableCheckbox: itemData.disableCheckbox,
+            checkOnClickNode,
             onSelect: onSelect,
             onCheck: onCheckChange,
             onToggle: (node: ITreeNode) => toggleExpand(node),
+          },
+          style: {
+            height: `${itemHeight}px`,
           },
         },
         {

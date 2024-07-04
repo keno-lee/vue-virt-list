@@ -27,7 +27,7 @@ export const treeNodeProps = {
     type: Boolean,
     default: false,
   },
-  showCheckbox: {
+  checkable: {
     type: Boolean,
     default: false,
   },
@@ -48,6 +48,14 @@ export const treeNodeProps = {
     type: Boolean,
     default: false,
   },
+  disableCheckbox: {
+    type: Boolean,
+    default: false,
+  },
+  checkOnClickNode: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
@@ -58,6 +66,9 @@ export default defineComponent({
   setup(props: TreeNodeProps, ctx: SetupContext) {
     const handleClick = (e: Event) => {
       e.stopPropagation();
+      if (props.checkOnClickNode) {
+        ctx.emit('check', props.node, !props.isChecked);
+      }
       ctx.emit('select', props.node, e);
     };
 
@@ -82,12 +93,13 @@ export default defineComponent({
     const {
       indent,
       isChecked,
-      showCheckbox,
+      checkable,
       indeterminate,
       expanded,
       node,
       hiddenExpandIcon,
       isSelected,
+      disableCheckbox,
     } = this.$props as TreeNodeProps;
 
     const defaultIcon = _h(
@@ -132,9 +144,9 @@ export default defineComponent({
       ],
     );
 
-    const slotCheckbox = showCheckbox
+    const slotCheckbox = checkable
       ? _h('div', {
-          class: `checkbox ${isChecked ? 'is-checked' : ''} ${indeterminate ? 'is-indeterminate' : ''}`,
+          class: `checkbox ${isChecked ? 'is-checked' : ''} ${indeterminate ? 'is-indeterminate' : ''} ${disableCheckbox ? 'is-disabled' : ''}`,
           onClick: onChange,
         })
       : null;
@@ -149,6 +161,27 @@ export default defineComponent({
           node.title,
         );
 
+    const childrenList = [slotCheckbox, slotContent];
+    // if (!node.isLeaf && !hiddenExpandIcon) {
+    childrenList.unshift(slotIcon);
+    // }
+    const block = () => {
+      if (node.level <= 1) {
+        return [];
+      }
+      return Array.from({ length: node.level - 1 }).map(() =>
+        childrenList.unshift(
+          _h('div', {
+            class: {
+              'virt-tree-node-block': true,
+              // 'is-last': !!node.isLast,
+            },
+            style: { width: `${indent}px` },
+          }),
+        ),
+      );
+    };
+    block();
     return getSlot(this, 'default')
       ? getSlot(this, 'default')?.(node, node!.data, expanded)
       : _h(
@@ -159,12 +192,11 @@ export default defineComponent({
               'is-selected': isSelected,
               'is-disabled': node.disabled,
             },
-            style: { paddingLeft: `${(node!.level - 1) * indent}px` },
             attrs: {
               onClick: handleClick,
             },
           },
-          [slotIcon, slotCheckbox, slotContent],
+          childrenList,
         );
   },
 });

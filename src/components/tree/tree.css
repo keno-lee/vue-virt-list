@@ -3,7 +3,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 4px;
   border-radius: 1px 1px 0 0;
   cursor: pointer;
 }
@@ -97,4 +96,47 @@
 
 .virt-tree-node-content {
   flex: 1;
+}
+.checkbox.is-disabled {
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.04);
+  border-color: #d9d9d9;
+}
+
+.checkbox.is-disabled::after {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+.virt-tree-node-block {
+  width: 16px;
+  position: relative;
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+
+.virt-tree-node-block::before {
+  position: absolute;
+  left: 50%;
+  box-sizing: border-box;
+  width: 1px;
+  border-left: 1px solid #2e3238;
+  transform: translate(-50%);
+  content: '';
+  top: 0px;
+  bottom: 0px;
+}
+
+.virt-tree-node-block::after {
+  position: absolute;
+  top: 50%;
+  box-sizing: border-box;
+  height: 1px;
+  border-top: 1px solid #2e3238;
+  transform: translate(100%);
+  content: '';
+  width: 50%;
+}
+
+.virt-tree-node-block.is-last::before {
+  height: calc(50% + 1px);
 }

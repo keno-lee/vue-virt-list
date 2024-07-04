@@ -68,6 +68,7 @@ const collapseNode = () => {
       :defaultExpandedKeys="['4']"
       :indent="20"
       selectable
+      defaultExpandAll
       stickyHeaderStyle="text-align: center; height: 40px; background: #42b983;"
       headerStyle="text-align: center; height: 40px; background: cyan"
       footerStyle="text-align: center; height: 40px; background: cyan"
