@@ -56,6 +56,10 @@ export const treeNodeProps = {
     type: Boolean,
     default: false,
   },
+  showLine: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
@@ -100,6 +104,7 @@ export default defineComponent({
       hiddenExpandIcon,
       isSelected,
       disableCheckbox,
+      showLine,
     } = this.$props as TreeNodeProps;
 
     const defaultIcon = _h(
@@ -161,27 +166,28 @@ export default defineComponent({
           node.title,
         );
 
-    const childrenList = [slotCheckbox, slotContent];
-    // if (!node.isLeaf && !hiddenExpandIcon) {
-    childrenList.unshift(slotIcon);
-    // }
-    const block = () => {
+    const generateChildren = () => {
+      const childrenList = [slotIcon, slotCheckbox, slotContent];
       if (node.level <= 1) {
-        return [];
+        return childrenList;
       }
-      return Array.from({ length: node.level - 1 }).map(() =>
+      Array.from({ length: node.level - 1 }).forEach((_, index) =>
         childrenList.unshift(
           _h('div', {
             class: {
               'virt-tree-node-block': true,
-              // 'is-last': !!node.isLast,
+              'virt-tree-node-block__line': showLine,
+              'vit-tree-node-block--vertical': index === 0 && showLine,
+              'vit-tree-node-block--half':
+                !!node.isLast && index === 0 && !expanded && showLine,
             },
             style: { width: `${indent}px` },
           }),
         ),
       );
+      return childrenList;
     };
-    block();
+
     return getSlot(this, 'default')
       ? getSlot(this, 'default')?.(node, node!.data, expanded)
       : _h(
@@ -196,7 +202,7 @@ export default defineComponent({
               onClick: handleClick,
             },
           },
-          childrenList,
+          generateChildren(),
         );
   },
 });

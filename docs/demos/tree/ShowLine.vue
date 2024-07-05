@@ -24,14 +24,6 @@ onMounted(() => {
       children: Array.from({ length: 2 }).map((_, indexChild) => ({
         id: `${i}-${index}-${indexChild}`,
         name: `Node-${i}-${index}-${indexChild}`,
-        disableCheckbox: indexChild % 2 === 0,
-        children:
-          indexChild % 2 !== 0
-            ? []
-            : Array.from({ length: 2 }).map((_, indexChild) => ({
-                id: `${i}-${index}-${indexChild}-${indexChild}`,
-                name: `Node-${i}-${index}-${indexChild}-${indexChild}`,
-              })),
       })),
     })),
   }));
@@ -39,52 +31,30 @@ onMounted(() => {
 
 const virtTreeRef = ref<typeof VirtTree>();
 const key = ref<number>(0);
-const onCollapseAll = () => {
-  virtTreeRef.value.collapseAllNods([]);
-};
 
-const onExpandAll = () => {
-  virtTreeRef.value.expandAllNodes();
+const filterMethod = (query: string, node: any) => {
+  return node.name.includes(query);
 };
-
-const expandNode = () => {
-  virtTreeRef.value.expandNodeByKey(key.value);
-};
-const collapseNode = () => {
-  virtTreeRef.value.collapseNodeByKey(key.value);
-};
-
-const checkedKeys = ref<number | string[]>(['1']);
-
-const onCheckChange = (data, checkedInfo) => {
-  console.warn('data', data, checkedInfo);
+const showLine = ref(true);
+const changeLine = () => {
+  showLine.value = !showLine.value;
 };
 </script>
 
 <template>
   <div class="demo-tree">
     <div class="tree-btn-container">
-      <div style="display: flex; gap: 8px">
-        <div class="btn-item" @click="onCollapseAll">折叠所有</div>
-        <div class="btn-item" @click="onExpandAll">展开所有</div>
-      </div>
-      <div class="input-container">
-        <div class="input-label">操作指定节点：</div>
-        <input v-model="key" />
-        <div class="btn-item" @click="expandNode">展开</div>
-        <div class="btn-item" @click="collapseNode">折叠</div>
+      <div class="btn-item" @click="changeLine">
+        {{ showLine ? '隐藏' : '显示' }}连接线
       </div>
     </div>
-    <div>{{ checkedKeys }}</div>
     <VirtTree
       ref="virtTreeRef"
       :data="data"
       :fieldNames="customFieldNames"
       :indent="20"
-      checkable
-      checkOnClickNode
-      v-model:checkedKeys="checkedKeys"
-      @node-check="onCheckChange"
+      :filter-method="filterMethod"
+      :showLine="showLine"
     >
       <template #empty>
         <div style="padding: 16px">暂无数据</div>

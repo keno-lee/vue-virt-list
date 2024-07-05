@@ -40,6 +40,7 @@ export default defineComponent({
       indent,
       itemHeight,
       checkOnClickNode,
+      showLine,
     } = this.$props as TreeProps;
 
     const renderTreeNode = ({
@@ -59,6 +60,7 @@ export default defineComponent({
             expanded: isExpanded(itemData),
             isChecked: isChecked(itemData),
             selectable,
+            showLine,
             isSelected: isSelected(itemData),
             indeterminate: isIndeterminate(itemData),
             disableCheckbox: itemData.disableCheckbox,

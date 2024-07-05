@@ -133,6 +133,10 @@ export const customFieldNames = {
     type: Number,
     default: 32,
   },
+  showLine: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 export const TreeNodeEmits = {
@@ -194,9 +198,7 @@ export const useTree = (
           if (children) {
             const length = children.length;
             for (let i = length - 1; i >= 0; --i) {
-              const childNode = children[i];
-              childNode.isLast = i === length - 1;
-              stack.push(childNode);
+              stack.push(children[i]);
             }
           }
         }
@@ -247,6 +249,7 @@ export const useTree = (
           disabled,
           disableCheckbox,
           isLeaf: !children || children.length === 0,
+          isLast: index === nodes.length,
         };
         if (children && children.length) {
           node.children = flat(children, level + 1, node);
@@ -292,6 +295,7 @@ export const useTree = (
 
   const toggleExpand = (node: ITreeNode) => {
     if (!virtListRef.value) return;
+    if (node.isLeaf) return;
     const { offset: preOffset } = virtListRef.value.reactiveData;
     const expandedKeys = expandedKeysSet.value;
     if (expandedKeys.has(node.key)) {

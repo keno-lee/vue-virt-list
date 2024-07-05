@@ -40,3 +40,9 @@ type Props = {
 自定义整个node节点
 
 <!<< @/demos/tree/Default.vue
+
+## 连接线
+
+展示节点连接线
+
+<!<< @/demos/tree/ShowLine.vue
