@@ -46,3 +46,9 @@ type Props = {
 展示节点连接线
 
 <!<< @/demos/tree/ShowLine.vue
+
+## 操作
+
+对 tree 的各种操作方式
+
+<!<< @/demos/tree/Operate.vue

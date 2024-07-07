@@ -18,6 +18,7 @@ import type {
   TreeKey,
   TreeFieldNames,
   CheckedInfo,
+  IScrollParams,
 } from './type';
 import { useCheck } from './useCheck';
 import { useFilter } from './useFilter';
@@ -388,6 +389,10 @@ export const useTree = (
     triggerRef(expandedKeysSet);
   };
 
+  const forceUpdate = () => {
+    virtListRef.value?.forceUpdate();
+  };
+
   const scrollToBottom = () => {
     virtListRef.value?.scrollToBottom();
   };
@@ -399,12 +404,32 @@ export const useTree = (
   const scrollToTarget = (key: TreeKey, isTop: boolean = true) => {
     const currIndex = flattenList.value.findIndex((l) => l.key === key);
     // 若展开节点不在可视区域内，将对应节点滚动到可视区域
-    if (currIndex < 0) return;
+    if (currIndex < 0) {
+      // 若滚动目标元素不在当前数据列表中，需要展开当前节点
+      expandNodeByKey(key);
+      return;
+    }
     if (isTop) {
       virtListRef.value?.scrollToIndex(currIndex);
       return;
     }
     virtListRef.value?.scrollIntoView(currIndex);
+  };
+
+  const scrollTo = (scroll: IScrollParams) => {
+    const { key, align, offset } = scroll;
+    if (offset && offset >= 0) {
+      // 只滚动到指定位置
+      virtListRef.value?.scrollToOffset(offset);
+      return;
+    }
+    // 滚动指定元素，需要滚动目标的 key
+    if (!key) return;
+    if (align && align === 'top') {
+      scrollToTarget(key, true);
+    } else {
+      scrollToTarget(key, false);
+    }
   };
 
   const onCheckChange = (node: ITreeNode, checked: boolean) => {
@@ -458,6 +483,8 @@ export const useTree = (
     scrollToBottom,
     scrollToTarget,
     scrollToTop,
+    scrollTo,
+    forceUpdate,
 
     isChecked,
     isIndeterminate,

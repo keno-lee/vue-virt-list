@@ -36,3 +36,9 @@ export interface CheckedInfo {
   halfCheckedKeys: TreeKey[];
   halfCheckedNodes: TreeData;
 }
+
+export interface IScrollParams {
+  key?: TreeKey;
+  align?: 'view' | 'top';
+  offset?: number;
+}
