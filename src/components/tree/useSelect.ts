@@ -24,14 +24,14 @@ export const useSelect = (
   // );
   // console.log('selectedNodes', selectedNodes);
   // const selectedNodesSet = shallowRef<Set<TreeNodeData>>(new Set());
-  const isSelected = (node: ITreeNode) => selectedKeysSet.value.has(node.key);
+  const hasSelected = (node: ITreeNode) => selectedKeysSet.value.has(node.key);
 
   const toggleSelect = (node: ITreeNode) => {
     if (node.disabled) {
       return;
     }
-    const selected = isSelected(node);
-    if (isSelected(node)) {
+    const selected = hasSelected(node);
+    if (selected) {
       selectedKeysSet.value.delete(node.key);
     } else {
       if (!multiple) {
@@ -54,7 +54,7 @@ export const useSelect = (
   };
 
   return {
-    isSelected,
+    hasSelected,
     toggleSelect,
   };
 };

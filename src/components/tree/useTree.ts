@@ -23,6 +23,7 @@ import type {
 import { useCheck } from './useCheck';
 import { useFilter } from './useFilter';
 import { useSelect } from './useSelect';
+import { useFocus } from './useFocus';
 
 // enums
 // export enum FieldNamesEnum {
@@ -90,26 +91,6 @@ export const customFieldNames = {
     default: true,
   },
 
-  checkedKeys: {
-    type: Array as PropType<TreeKey[]>,
-    default: () => [],
-  },
-  checkable: {
-    type: Boolean,
-    default: false,
-  },
-  disableCheckbox: {
-    type: Boolean,
-    default: false,
-  },
-  checkOnClickNode: {
-    type: Boolean,
-    default: false,
-  },
-  filterMethod: {
-    type: Function as PropType<(query: string, node: TreeNodeData) => boolean>,
-  },
-
   selectedKeys: {
     type: Array as PropType<TreeKey[]>,
     default: () => [],
@@ -122,6 +103,33 @@ export const customFieldNames = {
     type: Boolean,
     default: false,
   },
+
+  focusKey: {
+    type: [String, Number] as PropType<TreeKey>,
+    default: '',
+  },
+
+  checkedKeys: {
+    type: Array as PropType<TreeKey[]>,
+    default: () => [],
+  },
+  checkable: {
+    type: Boolean,
+    default: false,
+  },
+
+  disableCheckbox: {
+    type: Boolean,
+    default: false,
+  },
+  checkOnClickNode: {
+    type: Boolean,
+    default: false,
+  },
+  filterMethod: {
+    type: Function as PropType<(query: string, node: TreeNodeData) => boolean>,
+  },
+
   defaultExpandAll: {
     type: Boolean,
     default: false,
@@ -160,7 +168,7 @@ export const useTree = (
   const currentNode = ref<TreeKey>();
   const parentNodeKeys = new Set<TreeKey>();
 
-  const { isChecked, isIndeterminate, toggleCheckbox } = useCheck(
+  const { hasChecked, hasIndeterminate, toggleCheckbox } = useCheck(
     props,
     emits,
     tree,
@@ -209,7 +217,8 @@ export const useTree = (
     return flattenNodes;
   });
 
-  const { isSelected, toggleSelect } = useSelect(props, emits, flattenList);
+  const { hasSelected, toggleSelect } = useSelect(props, emits, flattenList);
+  const { hasFocused } = useFocus(props);
 
   const mergeFieldNames = {
     ...defaultFiledNames,
@@ -486,11 +495,13 @@ export const useTree = (
     scrollTo,
     forceUpdate,
 
-    isChecked,
-    isIndeterminate,
+    hasChecked,
+    hasIndeterminate,
     onCheckChange,
 
-    isSelected,
+    hasSelected,
     onSelect,
+
+    hasFocused,
   };
 };

@@ -74,19 +74,20 @@ const collapseNode = () => {
       footerStyle="text-align: center; height: 40px; background: cyan"
       stickyFooterStyle="text-align: center; height: 40px; background: #42b983;"
     >
-      <template #default="{ node }">
-        <div
-          style="
-            height: 40px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid red;
-          "
-        >
-          <div>level: {{ node.level }};</div>
-          <div>--</div>
-          <div>title: {{ node.data.name }}</div>
-        </div>
+      <template #stickyHeader>
+        <div>悬浮header</div>
+      </template>
+      <template #header>
+        <div>header</div>
+      </template>
+      <template #footer>
+        <div>footer</div>
+      </template>
+      <template #stickyFooter>
+        <div>悬浮footer</div>
+      </template>
+      <template #empty>
+        <div style="padding: 16px">暂无数据</div>
       </template>
     </VirtTree>
   </div>

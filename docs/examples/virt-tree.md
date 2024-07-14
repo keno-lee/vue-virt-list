@@ -17,6 +17,12 @@ type Props = {
 
 <!<< @/demos/tree/Selectable.vue
 
+## Focus
+
+Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-focused`类名
+
+<!<< @/demos/tree/Focus.vue
+
 ## Checkbox
 
 <!<< @/demos/tree/Checkbox.vue
@@ -41,14 +47,20 @@ type Props = {
 
 <!<< @/demos/tree/Default.vue
 
-## 连接线
+## showLine
 
 展示节点连接线
 
 <!<< @/demos/tree/ShowLine.vue
 
-## 操作
+## Operations
 
 对 tree 的各种操作方式
 
 <!<< @/demos/tree/Operate.vue
+
+## header&footer Slot
+
+<!<< @/demos/tree/Slots.vue
+
+## css variable

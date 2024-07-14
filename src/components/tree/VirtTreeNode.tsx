@@ -2,7 +2,6 @@ import {
   defineComponent,
   type ExtractPropTypes,
   type PropType,
-  type SetupContext,
 } from 'vue-demi';
 import type { ITreeNode } from './type';
 import { _h, _h2Slot, getSlot } from '../../util';
@@ -31,7 +30,7 @@ export const treeNodeProps = {
     type: Boolean,
     default: false,
   },
-  indeterminate: {
+  isIndeterminate: {
     type: Boolean,
     default: false,
   },
@@ -40,6 +39,10 @@ export const treeNodeProps = {
     default: false,
   },
 
+  isFocused: {
+    type: Boolean,
+    default: false,
+  },
   selectable: {
     type: Boolean,
     default: false,
@@ -60,6 +63,10 @@ export const treeNodeProps = {
     type: Boolean,
     default: false,
   },
+  itemHeight: {
+    type: Number,
+    default: 32,
+  },
 };
 
 export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
@@ -67,23 +74,25 @@ export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
 export default defineComponent({
   name: 'VirtTreeNode',
   props: treeNodeProps,
-  setup(props: TreeNodeProps, ctx: SetupContext) {
+  // inheritAttrs: false,
+  emits: ['check', 'select', 'toggle'],
+  setup(props: TreeNodeProps, { emit }) {
     const handleClick = (e: Event) => {
       e.stopPropagation();
       if (props.checkOnClickNode) {
-        ctx.emit('check', props.node, !props.isChecked);
+        emit('check', props.node, !props.isChecked);
       }
-      ctx.emit('select', props.node, e);
+      emit('select', props.node, e);
     };
 
     const handleToggle = (e: Event) => {
       e.stopPropagation();
-      ctx.emit('toggle', props.node);
+      emit('toggle', props.node);
     };
 
     const onChange = (e: Event) => {
       e.stopPropagation();
-      ctx.emit('check', props.node, !props.isChecked);
+      emit('check', props.node, !props.isChecked);
     };
 
     return {
@@ -98,13 +107,15 @@ export default defineComponent({
       indent,
       isChecked,
       checkable,
-      indeterminate,
+      isIndeterminate,
       expanded,
       node,
       hiddenExpandIcon,
       isSelected,
       disableCheckbox,
+      isFocused,
       showLine,
+      itemHeight,
     } = this.$props as TreeNodeProps;
 
     const defaultIcon = _h(
@@ -118,7 +129,7 @@ export default defineComponent({
       },
       _h('path', {
         d: 'M14.5632 7.72544L10.539 13.2587C10.2728 13.6247 9.72696 13.6247 9.46073 13.2587L5.43658 7.72544C5.11611 7.28479 5.43088 6.66666 5.97573 6.66666L14.024 6.66666C14.5689 6.66666 14.8837 7.28479 14.5632 7.72544Z',
-        fill: '#6B7075',
+        fill: 'var(--virt-tree-icon-color)',
       }),
     );
 
@@ -151,7 +162,7 @@ export default defineComponent({
 
     const slotCheckbox = checkable
       ? _h('div', {
-          class: `checkbox ${isChecked ? 'is-checked' : ''} ${indeterminate ? 'is-indeterminate' : ''} ${disableCheckbox ? 'is-disabled' : ''}`,
+          class: `checkbox ${isChecked ? 'is-checked' : ''} ${isIndeterminate ? 'is-indeterminate' : ''} ${disableCheckbox ? 'is-disabled' : ''}`,
           onClick: onChange,
         })
       : null;
@@ -197,6 +208,10 @@ export default defineComponent({
               'virt-tree-node': true,
               'is-selected': isSelected,
               'is-disabled': node.disabled,
+              'is-focused': isFocused,
+            },
+            style: {
+              height: `${itemHeight}px`,
             },
             attrs: {
               onClick: handleClick,

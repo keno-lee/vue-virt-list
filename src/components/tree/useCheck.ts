@@ -23,9 +23,9 @@ export const useCheck = (
   const checkedKeys = shallowRef<Set<TreeKey>>(new Set());
   const indeterminateKeys = shallowRef<Set<TreeKey>>(new Set());
 
-  const isChecked = (node: ITreeNode) => checkedKeys.value.has(node.key);
+  const hasChecked = (node: ITreeNode) => checkedKeys.value.has(node.key);
 
-  const isIndeterminate = (node: ITreeNode) =>
+  const hasIndeterminate = (node: ITreeNode) =>
     indeterminateKeys.value.has(node.key);
 
   const updateCheckedKeys = () => {
@@ -169,7 +169,7 @@ export const useCheck = (
       if (props.checkable && treeNodesMap && keys) {
         for (const key of keys) {
           const node = treeNodesMap.get(key);
-          if (node && !isChecked(node)) {
+          if (node && !hasChecked(node)) {
             toggleCheckbox(node, true, false);
           }
         }
@@ -221,8 +221,8 @@ export const useCheck = (
   );
 
   return {
-    isChecked,
-    isIndeterminate,
+    hasChecked,
+    hasIndeterminate,
     updateCheckedKeys,
     toggleCheckbox,
     setChecked,

@@ -55,6 +55,7 @@ const changeLine = () => {
       :indent="20"
       :filter-method="filterMethod"
       :showLine="showLine"
+      defaultExpandAll
     >
       <template #empty>
         <div style="padding: 16px">暂无数据</div>

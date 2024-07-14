@@ -23,14 +23,15 @@ export default defineComponent({
       isExpanded,
       onScroll,
 
-      isChecked,
-      isIndeterminate,
+      hasChecked,
+      hasIndeterminate,
       onCheckChange,
       toggleExpand,
       isForceHiddenExpandIcon,
 
       onSelect,
-      isSelected,
+      hasSelected,
+      hasFocused,
     } = this;
 
     const {
@@ -58,19 +59,18 @@ export default defineComponent({
             checkable,
             hiddenExpandIcon: isForceHiddenExpandIcon(itemData),
             expanded: isExpanded(itemData),
-            isChecked: isChecked(itemData),
+            isChecked: hasChecked(itemData),
             selectable,
             showLine,
-            isSelected: isSelected(itemData),
-            indeterminate: isIndeterminate(itemData),
+            isSelected: hasSelected(itemData),
+            isFocused: hasFocused(itemData),
+            isIndeterminate: hasIndeterminate(itemData),
             disableCheckbox: itemData.disableCheckbox,
             checkOnClickNode,
+            itemHeight,
             onSelect: onSelect,
             onCheck: onCheckChange,
             onToggle: (node: ITreeNode) => toggleExpand(node),
-          },
-          style: {
-            height: `${itemHeight}px`,
           },
         },
         {
@@ -102,7 +102,8 @@ export default defineComponent({
         ref: 'virtListRef',
         attrs: {
           list: flattenList,
-          minSize: minSize,
+          minSize: itemHeight,
+          fixed: true,
           itemKey: 'key',
           onScroll: onScroll,
           ...this.$attrs,

@@ -5,7 +5,9 @@
   --virt-tree-node-selected-bg-color: cyan;
   --virt-tree-node-disabled-color: #c0c4cc;
   --virt-tree-node-disabled-bg-color: burlywood;
-  --virt-tree-node-wrapper-hover-bg-color: red;
+  /* --virt-tree-node-wrapper-hover-bg-color: red; */
+
+  --virt-tree-text-color: #f9f9f9;
 
   --virt-tree-checkbox-bg-color: #fff;
   --virt-tree-checkbox-border-color: rgb(190, 192, 198);
@@ -16,15 +18,21 @@
   --virt-tree-checkbox-indeterminate-border-color: #1890ff;
 
   --virt-tree-line-color: #2e3238;
+
+  --virt-tree-icon-size: 16px;
+  --virt-tree-icon-color: #f9f9f9;
+  --virt-tree-icon-hover-color: #6b7075;
 }
 
 .virt-tree-node {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-radius: 1px 1px 0 0;
+  /* border-radius: 1px 1px 0 0; */
   cursor: pointer;
+  user-select: none;
+  color: var(--virt-tree-text-color);
+  padding: 0 4px;
 }
 .virt-tree-node:hover {
   background-color: var(--virt-tree-node-bg-color-hover);
@@ -35,23 +43,30 @@
   background-color: var(--virt-tree-node-selected-bg-color);
   color: var(--virt-tree-node-selected-color);
 }
+
 .virt-tree-node.is-disabled {
   color: var(--virt-tree-node-disabled-color);
   background-color: var(--virt-tree-node-disabled-bg-color);
+  color: #c0c4cc;
+  background-color: burlywood;
+}
+
+.virt-tree-node.is-disabled .virt-tree-node-content {
   cursor: not-allowed;
 }
 
 /* Tree Icon */
 .virt-tree-icon-wrapper {
-  width: 20px;
-  height: 20px;
+  width: var(--virt-tree-icon-size);
+  height: var(--virt-tree-icon-size);
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 4px;
+  border-radius: 2px;
+  color: var(--virt-tree-icon-color);
 }
 .virt-tree-icon-wrapper:hover {
-  background-color: var(--virt-tree-node-wrapper-hover-bg-color);
+  background-color: var(--virt-tree-icon-hover-color);
 }
 .virt-tree-icon-wrapper .virt-tree-icon {
   transform: rotate(-90deg);
@@ -116,6 +131,7 @@
 
 .virt-tree-node-content {
   flex: 1;
+  padding: 0 4px;
 }
 .checkbox.is-disabled {
   cursor: not-allowed;
