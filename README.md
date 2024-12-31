@@ -77,15 +77,15 @@ npm install vue-virt-list -S
 
 有问题可扫码加好友进入技术交流群（备注github账号名&vue-virt-list）
 
-<img src="https://img.picgo.net/2024/12/30/1000045433763d032888417e75.jpg" width=200 />
+<img src="https://cdn.jsdelivr.net/gh/kolarorz/images@master/wechat.jpg" width=200 />
 
 ## Sponsor
 
 开源不易，如果帮助到你，请作者喝杯咖啡吧~
 
-<img src="https://img.picgo.net/2024/12/30/10000454427ab5689585e7bf8e.png" width=200 />
+<img src="https://cdn.jsdelivr.net/gh/kolarorz/images@master/wechatpay.jpg" width=200 />
 
-<img src="https://img.picgo.net/2024/12/30/1000045443b8f7207b96d43fc1.jpg" width=200 />
+<img src="https://cdn.jsdelivr.net/gh/kolarorz/images@master/alipay.jpg" width=200 />
 
 ### 感谢您的慷慨
 
