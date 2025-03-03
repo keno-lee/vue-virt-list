@@ -35,6 +35,9 @@ const key = ref<number>(0);
 const filterMethod = (query: string, node: any) => {
   return node.title.includes(query);
 };
+const hasExpanded = (node: any) => {
+  return virtTreeRef.value?.hasExpanded(node);
+};
 </script>
 
 <template>
@@ -64,9 +67,9 @@ const filterMethod = (query: string, node: any) => {
         </template>
         <!-- 或者使用作用域插槽，注意：折叠状态下面是被旋转的 -->
         <!-- <template #icon="{ node }">
-        <div v-if="node.isExpanded">1</div>
-        <div v-else>2</div>
-      </template> -->
+          <div v-if="hasExpanded(node)">1</div>
+          <div v-else>2</div>
+        </template> -->
 
         <template #empty>
           <div style="padding: 16px">暂无数据</div>
