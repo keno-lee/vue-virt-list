@@ -4,9 +4,33 @@
 
 <!<< @/demos/tree/Basic.vue
 
+## Focus
+
+Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-focused`类名，一般该功能是用来保持节点下拉菜单使用的
+
+<!<< @/demos/tree/Focus.vue
+
 ## Selectable
 
 selectable 模式下只能点击图标进行展开/折叠
+
+> 受控模式
+>
+> > vue2
+> >
+> > > 使用： `:selectedKeys.sync="selectedKeys"`
+> > >
+> > > 更新：由于受vue2响应式特性，`selectedKeys` 使用原数组的方法来改变响应式，例如使用`splice() pop() push()等`
+> >
+> > vue3
+> >
+> > > 使用： `v-model:selectedKeys="selectedKeys"`
+> > >
+> > > 更新：由于受vue3响应式特性，`selectedKeys`必须使用新数组来改变响应式。
+>
+> 非受控模式
+>
+> > 不需要提供`selectedKeys`（这时候会自动生成一个内部的`selectedKeys`），使用 `selectAll() selectNode()` 方法来改变数据，使用 `@select="onSelect"` 来接收变更
 
 ```ts
 type Props = {
@@ -17,17 +41,47 @@ type Props = {
 
 <!<< @/demos/tree/Selectable.vue
 
-## Focus
-
-Focus 状态切换完全交由外部处理，内部仅给Node节点加上`.is-focused`类名
-
-<!<< @/demos/tree/Focus.vue
-
 ## Expand
+
+> 受控模式
+>
+> > vue2
+> >
+> > > 使用： `:expandedKeys.sync="expandedKeys"`
+> > >
+> > > 更新：由于受vue2响应式特性，`expandedKeys` 使用原数组的方法来改变响应式，例如使用`splice() pop() push()等`
+> >
+> > vue3
+> >
+> > > 使用： `v-model:expandedKeys="expandedKeys"`
+> > >
+> > > 更新：由于受vue3响应式特性，`expandedKeys`必须使用新数组来改变响应式。
+>
+> 非受控模式
+>
+> > 不需要提供`expandedKeys`（这时候会自动生成一个内部的`expandedKeys`），使用 `expandAll() expandNode()` 方法来改变数据，使用 `@expand="onExpand"` 来接收变更
 
 <!<< @/demos/tree/Expand.vue
 
 ## Checkbox
+
+> 受控模式
+>
+> > vue2
+> >
+> > > 使用： `:checkedKeys.sync="checkedKeys"`
+> > >
+> > > 更新：由于受vue2响应式特性，`checkedKeys`使用原数组的方法来改变响应式，例如使用`splice() pop() push()等`
+> >
+> > vue3
+> >
+> > > 使用： `v-model:checkedKeys="checkedKeys"`
+> > >
+> > > 更新：由于受vue3响应式特性，`checkedKeys`必须使用新数组来改变响应式。
+>
+> 非受控模式
+>
+> > 不需要提供 `checkedKeys`（这时候会自动生成一个内部的`checkedKeys`），使用 `checkAll() checkNode()` 方法来改变数据，使用 `@check="onCheck"` 来接收变更
 
 <!<< @/demos/tree/Checkbox.vue
 

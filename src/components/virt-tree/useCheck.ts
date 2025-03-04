@@ -194,6 +194,7 @@ export const useCheck = ({
   const checkAll = (checked: boolean) => {
     if (!checked) {
       checkedKeysSet.value.clear();
+      indeterminateKeysSet.value.clear();
     } else {
       const checkedKeys = treeInfo.allNodeKeys.filter((key) => {
         const node = getTreeNode(key);

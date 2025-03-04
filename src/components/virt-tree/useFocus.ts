@@ -14,6 +14,9 @@ export const useFocus = ({ props }: { props: TreeProps }) => {
       focusedKeysSet.value = new Set(keys);
       triggerRef(focusedKeysSet);
     },
+    {
+      immediate: true,
+    },
   );
   return {
     hasFocused,

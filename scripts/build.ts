@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import removeConsole from 'vite-plugin-remove-console';
 // import legacy from '@vitejs/plugin-legacy';
 
 // https://vitejs.dev/config/
@@ -9,8 +10,7 @@ export default defineConfig(({ command }) => ({
   // optimizeDeps: {
   //   exclude: ['vue-demi'],
   // },
-  plugins: [vue(), vueJsx()],
-
+  plugins: [vue(), vueJsx(), removeConsole()],
   // resolve: {
   //   alias: {
   //     '@': fileURLToPath(new URL('../example', import.meta.url)),

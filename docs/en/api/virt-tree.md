@@ -32,11 +32,20 @@
 
 ## Tree Methods
 
-| Method     | Description            | Parameters                                                              |
-| ---------- | ---------------------- | ----------------------------------------------------------------------- |
-| expandAll  | 设置全部节点的展开状态 | `(expanded: boolean)`                                                   |
-| expandNode | 展开指定节点           | `(key: TreeNodeKey\|TreeNodeKey[], expanded: boolean)`                  |
-| scrollTo   | 展开指定节点           | `({key?: string \| number; align?: 'view' \| 'top'; offset?: number;})` |
+| Method           | Description            | Parameters                                                              |
+| ---------------- | ---------------------- | ----------------------------------------------------------------------- |
+| scrollTo         | 滚动到                 | `({key?: string \| number; align?: 'view' \| 'top'; offset?: number;})` |
+| hasSelected      | 该节点是否被选中       | `(node: TreeNode) => boolean`                                           |
+| selectAll        | 设置全部节点的选中状态 | `(selected: boolean)`                                                   |
+| selectNode       | 选中指定节点           | `(key: TreeNodeKey\|TreeNodeKey[], selected: boolean)`                  |
+| hasExpanded      | 该节点是否展开         | `(node: TreeNode) => boolean`                                           |
+| toggleExpand     | 切换节点展开           | `(node: TreeNode) => boolean`                                           |
+| expandAll        | 设置全部节点的展开状态 | `(expanded: boolean)`                                                   |
+| expandNode       | 展开指定节点           | `(key: TreeNodeKey\|TreeNodeKey[], expanded: boolean)`                  |
+| hasChecked       | 该节点是否勾选         | `(node: TreeNode) => boolean`                                           |
+| hasIndeterminate | 该节点是否半选         | `(node: TreeNode) => boolean`                                           |
+| checkAll         | 设置全部节点的勾选状态 | `(checked: boolean)`                                                    |
+| checkNode        | 勾选指定节点           | `(key: TreeNodeKey\|TreeNodeKey[], checked: boolean)`                   |
 
 ## Tree Events
 
