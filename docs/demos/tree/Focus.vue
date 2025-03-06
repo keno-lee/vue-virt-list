@@ -67,7 +67,7 @@ function onChangeFocus(node: any) {
         :fieldNames="customFieldNames"
         :indent="20"
         :focusedKeys="focusedKeys"
-        :selectedKeys="selectedKeys"
+        v-model:selectedKeys="selectedKeys"
         @select="onSelect"
       >
         <template #content="{ node }">
