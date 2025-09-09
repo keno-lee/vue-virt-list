@@ -93,6 +93,8 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
               text: '上下分页',
               link: 'pagination',
             },
+
+            { text: 'keep-alive', link: 'keep-alive' },
           ],
         },
 

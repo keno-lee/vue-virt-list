@@ -93,6 +93,8 @@ function sidebarExamples(): DefaultTheme.SidebarItem[] {
               text: 'Pagination',
               link: 'pagination',
             },
+
+            { text: 'keep-alive', link: 'keep-alive' },
           ],
         },
 
