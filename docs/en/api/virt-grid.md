@@ -6,7 +6,7 @@
 | ----------- | ------------------------------------ | -------- | ------- | ----------------------------- |
 | list        | list data                            | `Array`  | -       | <font color="#f00">Yes</font> |
 | minSize     | The Min Size of Item                 | `Number` | `20`    | <font color="#f00">Yes</font> |
-| gridItems   | Number of items displayed per column | `Number` | `2`     | 否                            |
+| gridItems   | Number of items displayed per column | `Number` | `2`     | No                            |
 | other attrs | Same as VirtList's attribute         | -        | -       | -                             |
 
 ## Methods

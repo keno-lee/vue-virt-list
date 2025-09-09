@@ -25,7 +25,7 @@ export const en = defineConfig({
           },
         ],
       },
-      // 开发中
+      // Under development
       // { text: 'Playground', link: '/playground/' },
     ],
 

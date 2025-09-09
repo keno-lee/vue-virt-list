@@ -1,5 +1,5 @@
 # 基础示例
 
-## Example
+## 示例
 
 <!<< @/demos/basic/Main.vue
