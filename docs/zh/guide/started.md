@@ -22,6 +22,11 @@
 
 - `"vue": "^2.0.0 || >=3.0.0"`
 
+## vue版本说明
+
+`<=vue2.6` 需要自行安装 @vue/composition-api
+`>=vue2.7` 自带 composition-api，则无需处理
+
 ## 注意!!!
 
 1. `list.item.id` <font color="#f00">必须唯一!!!</font>

@@ -17,5 +17,5 @@ Fixed a bug in the Vue 2 diff algorithm (during the downward scrolling of the li
 
 ## shallowRef
 
-无论是使用VirtList还是使用VirtGrid，一旦使用了响应式。就需要使用提供的forceUpdate方法来更新list长度变化。对于item内容变化，需要自行使用renderKey来进行相应更新。
-具体demo请参考: https://kolarorz.github.io/vue-virt-list/examples/huge-data/
+Whether you are using VirtList or VirtGrid, once you use shallowRef, you need to use the provided forceUpdate method to update the list when its length changes. For changes to item content, you should manually use renderKey to trigger the corresponding updates.
+For a demo, see: https://kolarorz.github.io/vue-virt-list/examples/huge-data/

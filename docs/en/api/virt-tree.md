@@ -2,97 +2,97 @@
 
 ## Tree Attributes
 
-| Attribute                       | Description                                                                   | Type                         | Default   | Required                      |
-| ------------------------------- | ----------------------------------------------------------------------------- | ---------------------------- | --------- | ----------------------------- |
-| list                            | list                                                                          | `TreeNodeData[]`             | -         | <font color="#f00">Yes</font> |
-| minSize                         | **最小尺寸**，会根据这个尺寸来计算可视区域内个数                              | `number`                     | `32`      | <font color="#f00">Yes</font> |
-| indent                          | 相邻级节点间的水平缩进，单位为像素                                            | `number`                     | `16`      | 否                            |
-| iconSize                        | 图标大小                                                                      | `number`                     | `16`      | 否                            |
-| itemGap                         | the gap between item (item size include itemGap)                              | `Number`                     | 0         | 否                            |
-| showLine                        | 是否显示层级线                                                                | `boolean`                    | `false`   | 否                            |
-| `[expand]` expandedKeys         | `.sync` 展开的节点的 `key` 集合                                               | `TreeNodeKey[]`              | `[]`      | 否                            |
-| `[expand]` defaultExpandAll     | 是否默认展开节点                                                              | `boolean`                    | `true`    | 否                            |
-| `[expand]` expandOnClickNode    | 点击元素是否展开 (仅在selectable=false&checkOnClickNode=false时生效)          | `boolean`                    | `true`    | 否                            |
-| `[checkable]` checkable         | 是否有checkbox                                                                | `boolean`                    | `false`   | 否                            |
-| `[checkable]` checkedKeys       | `.sync` 勾选的节点的 `key` 集合，只在`showCheckbox`为 true 的时候生效         | `TreeNodeKey[]`              | `[]`      | 否                            |
-| `[checkable]` checkOnClickNode  | 点击节点是否可以选中checkbox                                                  | `boolean`                    | `false`   | 否                            |
-| `[checkable]` checkedStrictly   | 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false        | `boolean`                    | `false`   | 否                            |
-| `[selectable]` selectable       | 是否可以选中                                                                  | `boolean`                    | `false`   | 否                            |
-| `[selectable]` selectedKeys     | `.sync` 选中的节点的 `key` 集合，只在`selectable`为 true 的时候生效           | `TreeNodeKey[]`              | `[]`      | 否                            |
-| `[selectable]` selectMultiple   | 是否可以多选                                                                  | `boolean`                    | `false`   | 否                            |
-| `[focus]` focusedKeys           | `.sync` 激活的节点的 `key` 集合，也可以是一个节点                             | `TreeNodeKey\|TreeNodeKey[]` | `[]`      | 否                            |
-| `[draggable]` draggable         | 是否开启拖拽                                                                  | `boolean`                    | `false`   | 否                            |
-| `[draggable]` dragClass         | 拖拽的节点class                                                               | `string`                     | ``        | 否                            |
-| `[draggable]` dragGhostClass    | 拖拽的克隆节点class                                                           | `string`                     | ``        | 否                            |
-| `[draggable]` beforeDrag        | 拖拽进入每个节点前的回调，返回true代表可以完成该拖拽，返回false代表不可以完成 | `() => boolean`              | ``        | 否                            |
-| `[draggable]` dragoverPlacement | 拖拽区域生效的区域范围                                                        | `number[]`                   | `[33,66]` | 否                            |
-| filterMethod                    | 对树节点进行筛选时执行的方法，返回 true 显示， 返回 false 被隐藏              | `() => boolean`              | -         | 否                            |
-| fieldNames                      | 配置选项                                                                      | `TreeFieldNames`             | -         | 否                            |
-| 其他属性                        | 同VirtList属性                                                                | -                            | -         | -                             |
+| Attribute                       | Description                                                                                                                          | Type                         | Default   | Required                      |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- | --------- | ----------------------------- |
+| list                            | Tree data                                                                                                                            | `TreeNodeData[]`             | -         | <font color="#f00">Yes</font> |
+| minSize                         | **Minimum size**, used to calculate the number of items in the viewport                                                              | `number`                     | `32`      | <font color="#f00">Yes</font> |
+| indent                          | Horizontal indentation between adjacent level nodes, in pixels                                                                       | `number`                     | `16`      | No                            |
+| iconSize                        | Icon size                                                                                                                            | `number`                     | `16`      | No                            |
+| itemGap                         | Gap between items (item size includes itemGap)                                                                                       | `Number`                     | `0`       | No                            |
+| showLine                        | Whether to show level lines                                                                                                          | `boolean`                    | `false`   | No                            |
+| `[expand]` expandedKeys         | `.sync` Set of `key` values for expanded nodes                                                                                       | `TreeNodeKey[]`              | `[]`      | No                            |
+| `[expand]` defaultExpandAll     | Whether to expand nodes by default                                                                                                   | `boolean`                    | `true`    | No                            |
+| `[expand]` expandOnClickNode    | Whether to expand when clicking element (only effective when selectable=false&checkOnClickNode=false)                                | `boolean`                    | `true`    | No                            |
+| `[checkable]` checkable         | Whether to have checkbox                                                                                                             | `boolean`                    | `false`   | No                            |
+| `[checkable]` checkedKeys       | `.sync` Set of `key` values for checked nodes, only effective when `showCheckbox` is true                                            | `TreeNodeKey[]`              | `[]`      | No                            |
+| `[checkable]` checkOnClickNode  | Whether clicking node can select checkbox                                                                                            | `boolean`                    | `false`   | No                            |
+| `[checkable]` checkedStrictly   | When showing checkboxes, whether to strictly follow the practice of no mutual association between parent and child, default is false | `boolean`                    | `false`   | No                            |
+| `[selectable]` selectable       | Whether selection is allowed                                                                                                         | `boolean`                    | `false`   | No                            |
+| `[selectable]` selectedKeys     | `.sync` Set of `key` values for selected nodes, only effective when `selectable` is true                                             | `TreeNodeKey[]`              | `[]`      | No                            |
+| `[selectable]` selectMultiple   | Whether multiple selection is allowed                                                                                                | `boolean`                    | `false`   | No                            |
+| `[focus]` focusedKeys           | `.sync` Set of `key` values for focused nodes, can also be a single node                                                             | `TreeNodeKey\|TreeNodeKey[]` | `[]`      | No                            |
+| `[draggable]` draggable         | Whether to enable drag                                                                                                               | `boolean`                    | `false`   | No                            |
+| `[draggable]` dragClass         | Class for dragged node                                                                                                               | `string`                     | ``        | No                            |
+| `[draggable]` dragGhostClass    | Class for dragged clone node                                                                                                         | `string`                     | ``        | No                            |
+| `[draggable]` beforeDrag        | Callback before drag enters each node, return true to allow drag, return false to disallow                                           | `() => boolean`              | ``        | No                            |
+| `[draggable]` dragoverPlacement | Effective area range for drag area                                                                                                   | `number[]`                   | `[33,66]` | No                            |
+| filterMethod                    | Method executed when filtering tree nodes, return true to show, return false to hide                                                 | `() => boolean`              | -         | No                            |
+| fieldNames                      | Configuration options                                                                                                                | `TreeFieldNames`             | -         | No                            |
+| Other attributes                | Same as VirtList attributes                                                                                                          | -                            | -         | -                             |
 
 ## Tree Methods
 
-| Method           | Description            | Parameters                                                              |
-| ---------------- | ---------------------- | ----------------------------------------------------------------------- |
-| scrollTo         | 滚动到                 | `({key?: string \| number; align?: 'view' \| 'top'; offset?: number;})` |
-| hasSelected      | 该节点是否被选中       | `(node: TreeNode) => boolean`                                           |
-| selectAll        | 设置全部节点的选中状态 | `(selected: boolean)`                                                   |
-| selectNode       | 选中指定节点           | `(key: TreeNodeKey\|TreeNodeKey[], selected: boolean)`                  |
-| hasExpanded      | 该节点是否展开         | `(node: TreeNode) => boolean`                                           |
-| toggleExpand     | 切换节点展开           | `(node: TreeNode) => boolean`                                           |
-| expandAll        | 设置全部节点的展开状态 | `(expanded: boolean)`                                                   |
-| expandNode       | 展开指定节点           | `(key: TreeNodeKey\|TreeNodeKey[], expanded: boolean)`                  |
-| hasChecked       | 该节点是否勾选         | `(node: TreeNode) => boolean`                                           |
-| hasIndeterminate | 该节点是否半选         | `(node: TreeNode) => boolean`                                           |
-| checkAll         | 设置全部节点的勾选状态 | `(checked: boolean)`                                                    |
-| checkNode        | 勾选指定节点           | `(key: TreeNodeKey\|TreeNodeKey[], checked: boolean)`                   |
+| Method           | Description                       | Parameters                                                              |
+| ---------------- | --------------------------------- | ----------------------------------------------------------------------- |
+| scrollTo         | Scroll to                         | `({key?: string \| number; align?: 'view' \| 'top'; offset?: number;})` |
+| hasSelected      | Whether the node is selected      | `(node: TreeNode) => boolean`                                           |
+| selectAll        | Set selection state for all nodes | `(selected: boolean)`                                                   |
+| selectNode       | Select specified node             | `(key: TreeNodeKey\|TreeNodeKey[], selected: boolean)`                  |
+| hasExpanded      | Whether the node is expanded      | `(node: TreeNode) => boolean`                                           |
+| toggleExpand     | Toggle node expansion             | `(node: TreeNode) => boolean`                                           |
+| expandAll        | Set expansion state for all nodes | `(expanded: boolean)`                                                   |
+| expandNode       | Expand specified node             | `(key: TreeNodeKey\|TreeNodeKey[], expanded: boolean)`                  |
+| hasChecked       | Whether the node is checked       | `(node: TreeNode) => boolean`                                           |
+| hasIndeterminate | Whether the node is indeterminate | `(node: TreeNode) => boolean`                                           |
+| checkAll         | Set check state for all nodes     | `(checked: boolean)`                                                    |
+| checkNode        | Check specified node              | `(key: TreeNodeKey\|TreeNodeKey[], checked: boolean)`                   |
 
 ## Tree Events
 
-| 事件名     | 描述                                                                                   | 参数                                                                                                                                                                                                            |
-| ---------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| select     | 点击树节点时触发                                                                       | selectedKeys: `Array<string \| number>`<br>data: `{ selected?: boolean; selectedNodes: TreeNodeData[]; node?: TreeNodeData; e?: Event; }`                                                                       |
-| check      | 点击树节点复选框时触发。`halfCheckedKeys` 和 `halfCheckedNodes` 从 `2.19.0` 开始支持。 | checkedKeys: `Array<string \| number>`<br>data: `{ checked?: boolean; checkedNodes: TreeNodeData[]; node?: TreeNodeData; e?: Event; halfCheckedKeys: (string \| number)[]; halfCheckedNodes: TreeNodeData[]; }` |
-| expand     | 展开/关闭                                                                              | expandKeys: `Array<string \| number>`<br>data: `{ expanded?: boolean; expandNodes: TreeNodeData[]; node?: TreeNodeData; e?: Event; }`                                                                           |
-| drag-start | 节点开始拖拽                                                                           | ev: `DragEvent`<br>node: `TreeNodeData`                                                                                                                                                                         |
-| drag-end   | 节点结束拖拽                                                                           | ev: `DragEvent`<br>node: `TreeNodeData`                                                                                                                                                                         |
-| drag-over  | 节点被拖拽至可释放目标                                                                 | ev: `DragEvent`<br>node: `TreeNodeData`                                                                                                                                                                         |
-| drag-leave | 节点离开可释放目标                                                                     | ev: `DragEvent`<br>node: `TreeNodeData`                                                                                                                                                                         |
-| drop       | 节点在可释放目标上释放                                                                 | data: `{ e: DragEvent; dragNode: TreeNodeData; dropNode: TreeNodeData; dropPosition: number; }`                                                                                                                 |
+| Event Name | Description                                                                                                   | Parameters                                                                                                                                                                                                      |
+| ---------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| select     | Triggered when clicking tree node                                                                             | selectedKeys: `Array<string \| number>`<br>data: `{ selected?: boolean; selectedNodes: TreeNodeData[]; node?: TreeNodeData; e?: Event; }`                                                                       |
+| check      | Triggered when clicking tree node checkbox. `halfCheckedKeys` and `halfCheckedNodes` supported from `2.19.0`. | checkedKeys: `Array<string \| number>`<br>data: `{ checked?: boolean; checkedNodes: TreeNodeData[]; node?: TreeNodeData; e?: Event; halfCheckedKeys: (string \| number)[]; halfCheckedNodes: TreeNodeData[]; }` |
+| expand     | Expand/collapse                                                                                               | expandKeys: `Array<string \| number>`<br>data: `{ expanded?: boolean; expandNodes: TreeNodeData[]; node?: TreeNodeData; e?: Event; }`                                                                           |
+| drag-start | Node starts dragging                                                                                          | ev: `DragEvent`<br>node: `TreeNodeData`                                                                                                                                                                         |
+| drag-end   | Node ends dragging                                                                                            | ev: `DragEvent`<br>node: `TreeNodeData`                                                                                                                                                                         |
+| drag-over  | Node is dragged to droppable target                                                                           | ev: `DragEvent`<br>node: `TreeNodeData`                                                                                                                                                                         |
+| drag-leave | Node leaves droppable target                                                                                  | ev: `DragEvent`<br>node: `TreeNodeData`                                                                                                                                                                         |
+| drop       | Node is dropped on droppable target                                                                           | data: `{ e: DragEvent; dragNode: TreeNodeData; dropNode: TreeNodeData; dropPosition: number; }`                                                                                                                 |
 
 ## Tree Slots
 
-| Name    | Description                                            |
-| ------- | ------------------------------------------------------ |
-| icon    | 图标插槽， `作用域参数为 { node }`                     |
-| content | 节点内容插槽， `作用域参数为 { node }`                 |
-| default | 节点 item 内容， `作用域参数为 { node, data, expand }` |
-| header  | 节点 item 内容， `作用域参数为 { node, data, expand }` |
-| footer  | 节点 item 内容， `作用域参数为 { node, data, expand }` |
+| Name    | Description                                                    |
+| ------- | -------------------------------------------------------------- |
+| icon    | Icon slot, `scoped parameters: { node }`                       |
+| content | Node content slot, `scoped parameters: { node }`               |
+| default | Node item content, `scoped parameters: { node, data, expand }` |
+| header  | Node item content, `scoped parameters: { node, data, expand }` |
+| footer  | Node item content, `scoped parameters: { node, data, expand }` |
 
 ### TreeNode
 
-| 参数名          | 描述                            | 类型               | 默认值  |
-| --------------- | ------------------------------- | ------------------ | :-----: |
-| key             | 唯一标示                        | `string \| number` |   `-`   |
-| level           | 层级                            | number             |    1    |
-| title           | 该节点显示的标题                | `string`           |   `-`   |
-| isLeaf          | 是否是叶子节点。动态加载时有效  | `boolean`          | `false` |
-| isLast          | 是否是当前层级的最后节点        | `boolean`          | `false` |
-| parent          | 父级                            | `TreeNode[]`       |    1    |
-| children        | 子节点                          | `TreeNode[]`       |   `-`   |
-| disableSelect   | 是否禁用选中                    | `boolean`          | `false` |
-| disableCheckbox | 是否禁用复选框                  | `boolean`          | `false` |
-| data            | 定制 drag 图标，优先级大于 tree | `() => VNode`      |   `-`   |
+| Parameter Name  | Description                                             | Type               | Default |
+| --------------- | ------------------------------------------------------- | ------------------ | :-----: |
+| key             | Unique identifier                                       | `string \| number` |   `-`   |
+| level           | Level                                                   | number             |    1    |
+| title           | Title displayed for this node                           | `string`           |   `-`   |
+| isLeaf          | Whether it's a leaf node. Effective for dynamic loading | `boolean`          | `false` |
+| isLast          | Whether it's the last node at current level             | `boolean`          | `false` |
+| parent          | Parent                                                  | `TreeNode[]`       |    1    |
+| children        | Child nodes                                             | `TreeNode[]`       |   `-`   |
+| disableSelect   | Whether to disable selection                            | `boolean`          | `false` |
+| disableCheckbox | Whether to disable checkbox                             | `boolean`          | `false` |
+| data            | Custom drag icon, priority over tree                    | `() => VNode`      |   `-`   |
 
 ### TreeFieldNames
 
-| Attribute       | Description                        | Type             | Default           | Required |
-| --------------- | ---------------------------------- | ---------------- | ----------------- | -------- |
-| key             | 每个树节点用来作为唯一key的属性    | `string, number` | `key`             | 否       |
-| title           | 指定节点标签为节点对象的某个属性值 | `string`         | `title`           | 否       |
-| children        | 指定子树为节点对象的某个属性值     | `string`         | `children`        | 否       |
-| disableSelect   | 禁止选中                           | `string`         | `disableSelect`   | 否       |
-| disableCheckbox | 禁止复选框勾选                     | `string`         | `disableCheckbox` | 否       |
-| disableDragIn   | 禁止拖入该节点                     | `string`         | `disableDragIn`   | 否       |
-| disableDragOut  | 禁止拖出该节点                     | `string`         | `disableDragOut`  | 否       |
+| Attribute       | Description                                           | Type             | Default           | Required |
+| --------------- | ----------------------------------------------------- | ---------------- | ----------------- | -------- |
+| key             | Property used as unique key for each tree node        | `string, number` | `key`             | No       |
+| title           | Specify node label as a property value of node object | `string`         | `title`           | No       |
+| children        | Specify subtree as a property value of node object    | `string`         | `children`        | No       |
+| disableSelect   | Disable selection                                     | `string`         | `disableSelect`   | No       |
+| disableCheckbox | Disable checkbox check                                | `string`         | `disableCheckbox` | No       |
+| disableDragIn   | Disable drag into this node                           | `string`         | `disableDragIn`   | No       |
+| disableDragOut  | Disable drag out of this node                         | `string`         | `disableDragOut`  | No       |

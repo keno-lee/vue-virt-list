@@ -2,8 +2,8 @@
 
 ## Example
 
-30w行数据
+300,000 rows of data
 
-巨量数据请使用 `ShallowRef !!!`，`否则内存就爆了!!!` 如需响应式，请使用 `virtListRef.value?.forceUpdate();`。或者，自己新增一个`renderKey`来控制渲染
+For huge amounts of data, please use `ShallowRef !!!`, `otherwise memory will explode!!!` If you need reactivity, please use `virtListRef.value?.forceUpdate();`. Or, add your own `renderKey` to control rendering.
 
 <!<< @/demos/huge-data/Main.vue
