@@ -612,9 +612,24 @@ export const useDrag = ({
     hoverTreeItem = findAncestorWithClass(hoverElement, 'virt-tree-item');
     if (!hoverTreeItem) return;
     const hoverTreeId = hoverTreeItem?.dataset?.id;
-    if (!hoverTreeId) return;
+    const sourceTreeId = sourceTreeItem?.dataset?.id;
+    if (!hoverTreeId || !sourceTreeId) return;
     const hoverTreeNode = getTreeNode(hoverTreeId);
     if (!hoverTreeNode) return;
+
+    if (hoverTreeId === sourceTreeId) {
+      sourceTreeItem = hoverTreeItem as HTMLElement;
+      sourceTreeItem.classList.add('virt-tree-item--drag');
+      if (hasStyleTreeItem?.contains(dragLine)) {
+        hasStyleTreeItem?.removeChild(dragLine);
+      }
+      if (hasStyleTreeItem?.contains(dragBox)) {
+        hasStyleTreeItem?.removeChild(dragBox);
+      }
+
+      dragEffect = false;
+      return;
+    }
     const hoverTreeItemRect = hoverTreeItem?.getBoundingClientRect();
     if (!hoverTreeItemRect) return;
 
