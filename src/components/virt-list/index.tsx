@@ -4,6 +4,7 @@ import {
   defineComponent,
   onBeforeMount,
   onMounted,
+  onActivated,
   onBeforeUnmount,
   shallowReactive,
   ref,
@@ -655,6 +656,10 @@ function useVirtList<T extends Record<string, any>>(
       resizeObserver?.unobserve(footerRefEl.value);
       slotSize.footerSize = 0;
     }
+  });
+
+  onActivated(() => {
+    scrollToOffset(reactiveData.offset);
   });
 
   function getVirtualSize2beginInView() {
